@@ -30,15 +30,17 @@ README = get_readme()
 VERSION = '0.1.0'
 ISRELEASED = False
 
-PYTHON_MIN_VERSION = "3.7"
-PYTHON_MAX_VERSION = "3.8"
+PYTHON_VERSION = "3.8"
+
+PACKAGES = ["tensorcross", "tests"]
 
 metadata = dict(
     name=DISTNAME,
     version=VERSION,
     long_description=README,
-    packages=["tensorcross", "tests"],
+    packages=PACKAGES,
     author=AUTHOR,
+    python_requires=PYTHON_VERSION,
     description=DESCRIPTION,
     classifiers=[CLASSIFIERS],
     license=LICENSE,

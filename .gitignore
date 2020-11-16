@@ -1,16 +1,7 @@
-logs/
-models/
 .vscode/
-*.pptx
 *.txt
-*.png
 *.isorted
 !requirements.txt
-
-Chapter1_Introduction/
-Chapter12_Outlook/
-**/lectures/
-**/**/lectures/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
