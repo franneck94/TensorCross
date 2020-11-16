@@ -1,0 +1,35 @@
+# TensorFlow Libraries
+tensorflow==2.3.1
+tensorflow-datasets==4.1.*
+tensorflow-addons==0.11.*
+# Other Libraries
+scikit-learn==0.23.*
+seaborn==0.10.*
+scipy==1.4.*
+scikit-image==0.17.*
+numpy==1.18.*
+matplotlib==3.3.*
+pandas==1.1.*
+
+# Linting/Tooling
+pylint
+flake8
+mypy
+isort
+black
+autopep8
+pre-commit
+
+# Testing
+pytest>=5.4.3
+codecov>=2.1.7
+pytest-cov>=2.10.0
+tox>=3.16.1
+pre-commit>=2.6.0
+pytest-benchmark>=3.2.3
+
+# Documentation
+Sphinx>=3.1.2
+Pygments>=2.6.1
+numpydoc>=1.1.0
+sphinx_rtd_theme>=0.4.3
