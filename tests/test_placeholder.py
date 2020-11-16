@@ -1,6 +1,5 @@
-"""Test vectorND code.
+"""Test code.
 """
-import math
 import unittest
 
 from tensorcross import test_fn
