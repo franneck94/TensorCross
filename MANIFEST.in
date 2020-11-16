@@ -1,5 +1,4 @@
 include *.txt
-include .coveragerc
 include LICENSE
 include Makefile
 recursive-include docs *.bat
