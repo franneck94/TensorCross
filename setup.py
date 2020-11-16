@@ -27,8 +27,8 @@ DESCRIPTION = "Cross Validation, Grid Search and Random Search for TensorFlow Da
 LICENSE = get_license()
 README = get_readme()
 
-VERSION = '1.0.0'
-ISRELEASED = True
+VERSION = '0.1.0'
+ISRELEASED = False
 
 PYTHON_MIN_VERSION = "3.7"
 PYTHON_MAX_VERSION = "3.8"
