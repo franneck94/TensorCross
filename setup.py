@@ -30,7 +30,7 @@ README = get_readme()
 VERSION = '0.1.0'
 ISRELEASED = False
 
-PYTHON_VERSION = "3.8"
+PYTHON_VERSION = "==3.8"
 
 PACKAGES = ["tensorcross", "tests"]
 
