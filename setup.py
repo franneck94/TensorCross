@@ -23,7 +23,8 @@ Operating System :: MacOS
 
 DISTNAME = "tensorcross"
 AUTHOR = "Jan Schaffranek, Saif Al-Dilaimi"
-DESCRIPTION = "Cross Validation, Grid Search and Random Search for TensorFlow Datasets."
+DESCRIPTION = ("Cross Validation, Grid Search and Random Search for TensorFlow"
+               "Datasets.")
 LICENSE = get_license()
 README = get_readme()
 
