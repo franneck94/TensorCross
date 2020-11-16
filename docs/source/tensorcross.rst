@@ -1,23 +1,23 @@
-fastvector package
+tensorcross package
 ==================
 
 Submodules
 ----------
 
-fastvector.vector module
+tensorcross.vector module
 ------------------------
 
-.. automodule:: fastvector.vector
+.. automodule:: tensorcross.vector
    :members:
    :undoc-members:
    :show-inheritance:
    :special-members:
 
 
-fastvector.computations module
+tensorcross.computations module
 ------------------------------
 
-.. automodule:: fastvector.computations
+.. automodule:: tensorcross.computations
    :members:
    :undoc-members:
    :show-inheritance:
@@ -27,7 +27,7 @@ fastvector.computations module
 Module contents
 ---------------
 
-.. automodule:: fastvector
+.. automodule:: tensorcross
    :members:
    :undoc-members:
    :show-inheritance:

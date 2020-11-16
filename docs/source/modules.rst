@@ -1,7 +1,7 @@
-fastvector
+tensorcross
 =========
 
 .. toctree::
    :maxdepth: 4
 
-   fastvector
+   tensorcross

@@ -12,12 +12,12 @@ import os
 import sys
 
 
-sys.path.insert(0, os.path.abspath('../../fastvector/'))
+sys.path.insert(0, os.path.abspath('../../tensorcross/'))
 
 
 # -- Project information -----------------------------------------------------
 
-project = 'FastVector'
+project = 'tensorcross'
 copyright = '2020, Jan Schaffranek'  # pylint: disable=W0622
 author = 'Jan Schaffranek'
 

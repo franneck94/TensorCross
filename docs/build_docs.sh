@@ -1,2 +1,2 @@
-sphinx-apidoc -o source/ ../fastvector/
+sphinx-apidoc -o source/ ../tensorcross/
 sphinx-build -b html ./source/ ./build/
