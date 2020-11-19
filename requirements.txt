@@ -7,7 +7,7 @@ tensorflow-addons
 scikit-learn
 scipy
 scikit-image
-numpy==1.19.0
+numpy==1.18.*
 
 # Linting/Tooling
 pylint
