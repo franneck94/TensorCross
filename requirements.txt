@@ -29,3 +29,6 @@ Sphinx
 Pygments
 numpydoc
 sphinx_rtd_theme
+
+# Packaging
+twine
