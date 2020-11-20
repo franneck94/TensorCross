@@ -1,0 +1,125 @@
+from typing import Tuple
+
+import numpy as np
+import tensorflow as tf
+from scipy.stats import randint
+from scipy.stats import uniform
+from tensorflow.keras.layers import Activation
+from tensorflow.keras.layers import Conv2D
+from tensorflow.keras.layers import Dense
+from tensorflow.keras.layers import Flatten
+from tensorflow.keras.layers import Input
+from tensorflow.keras.layers import MaxPool2D
+from tensorflow.keras.models import Model
+from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.optimizers import RMSprop
+
+from tensorcross.random_search import RandomSearch
+
+from cifarDataAdvanced import CIFAR10
+
+
+np.random.seed(0)
+tf.random.set_seed(0)
+
+
+def build_model(
+    img_shape: Tuple[int, int, int],
+    num_classes: int,
+    optimizer: tf.keras.optimizers.Optimizer,
+    learning_rate: float,
+    filter_block1: int,
+    kernel_size_block1: int,
+    filter_block2: int,
+    kernel_size_block2: int,
+    filter_block3: int,
+    kernel_size_block3: int,
+    dense_layer_size: int,
+) -> Model:
+    input_img = Input(shape=img_shape)
+
+    x = Conv2D(
+        filters=filter_block1, kernel_size=kernel_size_block1, padding="same"
+    )(input_img)
+    x = Activation("relu")(x)
+    x = Conv2D(
+        filters=filter_block1, kernel_size=kernel_size_block1, padding="same"
+    )(x)
+    x = Activation("relu")(x)
+    x = MaxPool2D()(x)
+
+    x = Conv2D(
+        filters=filter_block2, kernel_size=kernel_size_block2, padding="same"
+    )(x)
+    x = Activation("relu")(x)
+    x = Conv2D(
+        filters=filter_block2, kernel_size=kernel_size_block2, padding="same"
+    )(x)
+    x = Activation("relu")(x)
+    x = MaxPool2D()(x)
+
+    x = Conv2D(
+        filters=filter_block3, kernel_size=kernel_size_block3, padding="same"
+    )(x)
+    x = Activation("relu")(x)
+    x = Conv2D(
+        filters=filter_block3, kernel_size=kernel_size_block3, padding="same"
+    )(x)
+    x = Activation("relu")(x)
+    x = MaxPool2D()(x)
+
+    x = Flatten()(x)
+    x = Dense(units=dense_layer_size)(x)
+    x = Activation("relu")(x)
+    x = Dense(units=num_classes)(x)
+    y_pred = Activation("softmax")(x)
+
+    model = Model(inputs=[input_img], outputs=[y_pred])
+
+    opt = optimizer(learning_rate=learning_rate)
+
+    model.compile(
+        loss="categorical_crossentropy", optimizer=opt, metrics=["accuracy"]
+    )
+
+    return model
+
+
+if __name__ == "__main__":
+    data = CIFAR10()
+
+    train_dataset = data.get_train_set()
+    val_dataset = data.get_val_set()
+
+    img_shape = data.img_shape
+    num_classes = data.num_classes
+
+    epochs = 30
+
+    param_distributions = {
+        "optimizer": [Adam, RMSprop],
+        "learning_rate": uniform(0.001, 0.0001),
+        "filter_block1": randint(16, 64),
+        "kernel_size_block1": randint(3, 7),
+        "filter_block2": randint(16, 64),
+        "kernel_size_block2": randint(3, 7),
+        "filter_block3": randint(16, 64),
+        "kernel_size_block3": randint(3, 7),
+        "dense_layer_size": randint(128, 1024),
+    }
+
+    rand_search = RandomSearch(
+        model_fn=build_model,
+        param_distributions=param_distributions,
+        n_iter=2,
+        verbose=True,
+        img_shape=img_shape,
+        num_classes=num_classes
+    )
+
+    rand_search.fit(
+        train_dataset=train_dataset,
+        val_dataset=val_dataset,
+        epochs=epochs,
+        verbose=1
+    )
