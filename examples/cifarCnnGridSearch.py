@@ -138,7 +138,8 @@ if __name__ == "__main__":
     results["best_params"] = results["params"][best_run_idx]
 
     print(
-        f"Best score: {results['best_score']} using params: {results['best_params']}\n"
+        f"Best score: {results['best_score']} "
+        f"using params: {results['best_params']}\n"
     )
 
     scores = results["val_scores"]
