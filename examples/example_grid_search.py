@@ -1,9 +1,6 @@
 import numpy as np
 import tensorflow as tf
 
-from scipy.stats import randint
-from scipy.stats import uniform
-
 from tensorcross import GridSearch
 
 from dummyData import DATA
