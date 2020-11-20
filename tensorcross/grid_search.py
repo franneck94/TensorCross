@@ -10,10 +10,12 @@ class GridSearch:
     def __init__(
         self,
         model_fn: Callable,
-        parameter_grid: Dict[str, Any]
+        parameter_grid: Dict[str, Any],
+        verbose: bool = False,
+        **kwargs: Any
     ) -> None:
         self.model_fn = model_fn
-        self.parameter_grid = parameter_grid
+        self.parameter_grid = ParameterGrid(parameter_grid)
         self.results = {
             "best_score": -np.inf,
             "best_params": {},
