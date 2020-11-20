@@ -12,7 +12,11 @@ def f(x: np.ndarray) -> np.ndarray:
 
 
 class DATA:
-    def __init__(self, test_size: float = 0.2, validation_size: float = 0.33) -> None:
+    def __init__(
+        self,
+        test_size: float = 0.2,
+        validation_size: float = 0.33
+    ) -> None:
         # User-definen constants
         self.num_targets = 1
         self.batch_size = 128

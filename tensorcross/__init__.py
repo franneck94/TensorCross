@@ -1,5 +1,2 @@
 from .version import __version__
-
-
-def test_fn() -> str:
-    return "hello world"
+from .random_search import RandomSearch
