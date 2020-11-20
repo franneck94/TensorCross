@@ -2,7 +2,6 @@ import numpy as np
 import tensorflow as tf
 
 from typing import Any, Callable, Dict, Iterable
-from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import ParameterGrid
 
 
@@ -15,6 +14,17 @@ class GridSearch:
         verbose: int = 0,
         **kwargs: Any
     ) -> None:
+        """RandomSearch for a given parameter distribution.
+
+        Args:
+            model_fn (Callable): Function that builds and compiles a
+                tf.keras.Model or tf.keras.Sequential object.
+            parameter_grid (Dict[str, Iterable]): Dict of str, iterable
+                hyperparameter, where the str is the parameter name of the.
+            n_iter (int, optional): Number of random models. Defaults to 10.
+            verbose (int, optional): Whether to show information in terminal.
+                Defaults to 0.
+        """
         self.model_fn = model_fn
         self.parameter_grid = ParameterGrid(parameter_grid)
         self.n_iter = n_iter
@@ -33,6 +43,15 @@ class GridSearch:
         val_dataset: tf.data.Dataset,
         **kwargs: Any
     ) -> None:
+        """[summary]
+
+        Args:
+            train_dataset (tf.data.Dataset): tf.data.Dataset object for the
+                training.
+            val_dataset (tf.data.Dataset, optional): tf.data.Dataset object for
+                the validation.
+            kwargs (Any): Keyword arguments for the build model_fn.
+        """
         for idx, grid_combination in enumerate(self.parameter_grid):
             if self.verbose:
                 print(f"Running Comb: {idx}")
