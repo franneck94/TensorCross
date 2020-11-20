@@ -1,5 +1,5 @@
 tensorcross
-=========
+===========
 
 .. toctree::
    :maxdepth: 4
