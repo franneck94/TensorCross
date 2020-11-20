@@ -16,7 +16,7 @@ from tensorflow.keras.optimizers import RMSprop
 
 from tensorcross.random_search import RandomSearch
 
-from cifarDataAdvanced import CIFAR10
+from dummyData import DATA
 
 
 np.random.seed(0)
@@ -24,88 +24,43 @@ tf.random.set_seed(0)
 
 
 def build_model(
-    img_shape: Tuple[int, int, int],
-    num_classes: int,
+    num_features: int,
+    num_targets: int,
     optimizer: tf.keras.optimizers.Optimizer,
-    learning_rate: float,
-    filter_block1: int,
-    kernel_size_block1: int,
-    filter_block2: int,
-    kernel_size_block2: int,
-    filter_block3: int,
-    kernel_size_block3: int,
-    dense_layer_size: int,
+    learning_rate: float
 ) -> Model:
-    input_img = Input(shape=img_shape)
+    x_input = Input(shape=num_features)
 
-    x = Conv2D(
-        filters=filter_block1, kernel_size=kernel_size_block1, padding="same"
-    )(input_img)
+    x = Dense(units=10)(x_input)
     x = Activation("relu")(x)
-    x = Conv2D(
-        filters=filter_block1, kernel_size=kernel_size_block1, padding="same"
-    )(x)
-    x = Activation("relu")(x)
-    x = MaxPool2D()(x)
-
-    x = Conv2D(
-        filters=filter_block2, kernel_size=kernel_size_block2, padding="same"
-    )(x)
-    x = Activation("relu")(x)
-    x = Conv2D(
-        filters=filter_block2, kernel_size=kernel_size_block2, padding="same"
-    )(x)
-    x = Activation("relu")(x)
-    x = MaxPool2D()(x)
-
-    x = Conv2D(
-        filters=filter_block3, kernel_size=kernel_size_block3, padding="same"
-    )(x)
-    x = Activation("relu")(x)
-    x = Conv2D(
-        filters=filter_block3, kernel_size=kernel_size_block3, padding="same"
-    )(x)
-    x = Activation("relu")(x)
-    x = MaxPool2D()(x)
-
-    x = Flatten()(x)
-    x = Dense(units=dense_layer_size)(x)
-    x = Activation("relu")(x)
-    x = Dense(units=num_classes)(x)
+    x = Dense(units=num_targets)(x)
     y_pred = Activation("softmax")(x)
 
-    model = Model(inputs=[input_img], outputs=[y_pred])
+    model = Model(inputs=[x_input], outputs=[y_pred])
 
     opt = optimizer(learning_rate=learning_rate)
 
     model.compile(
-        loss="categorical_crossentropy", optimizer=opt, metrics=["accuracy"]
+        loss="mse", optimizer=opt, metrics=["mse"]
     )
 
     return model
 
 
 if __name__ == "__main__":
-    data = CIFAR10()
+    data = DATA()
 
     train_dataset = data.get_train_set()
     val_dataset = data.get_val_set()
 
-    img_shape = data.img_shape
-    num_classes = data.num_classes
+    num_features = data.num_features
+    num_targets = data.num_targets
 
-    epochs = 30
+    epochs = 3
 
     param_distributions = {
         "optimizer": [Adam, RMSprop],
-        "learning_rate": uniform(0.001, 0.0001),
-        "filter_block1": randint(16, 64),
-        "kernel_size_block1": randint(3, 7),
-        "filter_block2": randint(16, 64),
-        "kernel_size_block2": randint(3, 7),
-        "filter_block3": randint(16, 64),
-        "kernel_size_block3": randint(3, 7),
-        "dense_layer_size": randint(128, 1024),
+        "learning_rate": uniform(0.001, 0.0001)
     }
 
     rand_search = RandomSearch(
@@ -113,8 +68,8 @@ if __name__ == "__main__":
         param_distributions=param_distributions,
         n_iter=2,
         verbose=True,
-        img_shape=img_shape,
-        num_classes=num_classes
+        num_features=num_features,
+        num_targets=num_targets
     )
 
     rand_search.fit(
@@ -123,3 +78,5 @@ if __name__ == "__main__":
         epochs=epochs,
         verbose=1
     )
+
+    rand_search.summary()

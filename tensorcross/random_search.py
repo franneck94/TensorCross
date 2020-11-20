@@ -32,7 +32,7 @@ class RandomSearch:
             self.param_distributions,
             n_iter=self.n_iter
         )
-        self.results = {
+        self.results_ = {
             "best_score": -np.inf,
             "best_params": {},
             "val_scores": [],
@@ -72,9 +72,21 @@ class RandomSearch:
                 val_dataset,
                 verbose=0
             )[1]
-            self.results["val_scores"].append(val_metric)
-            self.results["params"].append(random_combination)
+            self.results_["val_scores"].append(val_metric)
+            self.results_["params"].append(random_combination)
 
-        best_run_idx = np.argmax(self.results["val_scores"])
-        self.results["best_score"] = self.results["val_scores"][best_run_idx]
-        self.results["best_params"] = self.results["params"][best_run_idx]
+        best_run_idx = np.argmax(self.results_["val_scores"])
+        self.results_["best_score"] = self.results_["val_scores"][best_run_idx]
+        self.results_["best_params"] = self.results_["params"][best_run_idx]
+
+    def summary(self) -> None:
+        print(
+            f"Best score: {self.results_['best_score']} "
+            f"using params: {self.results_['best_params']}\n"
+        )
+
+        scores = self.results_["val_scores"]
+        params = self.results_["params"]
+
+        for idx, (score, param) in enumerate(zip(scores, params)):
+            print(f"Idx: {idx} - Score: {score} with param: {param}")
