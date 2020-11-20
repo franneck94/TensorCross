@@ -4,7 +4,6 @@ import tensorflow as tf
 from typing import Any, Callable, Dict, Iterable
 from sklearn.model_selection import ParameterGrid
 
-
 class GridSearch:
     def __init__(
         self,
