@@ -13,16 +13,19 @@ class RandomSearch:
         model_fn: Callable,
         param_distributions: Dict[str, Callable],
         n_iter: int = 10,
-        verbose: bool = False,
+        verbose: int = 0,
         **kwargs: Any
     ) -> None:
         """RandomSearch for a given parameter distribution.
 
         Args:
-            model_fn (Callable): Function that builds and compiles a keras Model
+            model_fn (Callable): Function that builds and compiles a
+                tf.keras.Model or tf.keras.Sequential object.
             param_distributions (Dict[str, Callable]): Dict of str, callable
-                pairs, where the str is the parameter name of the
+                pairs, where the str is the parameter name of the.
             n_iter (int, optional): Number of random models. Defaults to 10.
+            verbose (int, optional): Whether to show information in terminal.
+                Defaults to 0.
         """
         self.model_fn = model_fn
         self.param_distributions = param_distributions
@@ -43,7 +46,7 @@ class RandomSearch:
     def fit(
         self,
         train_dataset: tf.data.Dataset,
-        val_dataset: tf.data.Dataset = None,
+        val_dataset: tf.data.Dataset,
         **kwargs: Any
     ) -> None:
         """[summary]
@@ -52,7 +55,8 @@ class RandomSearch:
             train_dataset (tf.data.Dataset): tf.data.Dataset object for the
                 training.
             val_dataset (tf.data.Dataset, optional): tf.data.Dataset object for
-                the validation.. Defaults to None.
+                the validation.
+            kwargs (Any): Keyword arguments for the build model_fn.
         """
         for idx, random_combination in enumerate(self.random_sampler):
             if self.verbose:
