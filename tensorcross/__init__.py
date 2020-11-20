@@ -1,5 +1,3 @@
-__version__ = "0.1.0"
-
-
-def test_fn() -> str:
-    return "hello world"
+from .version import __version__
+from .random_search import RandomSearch
+from .grid_search import GridSearch

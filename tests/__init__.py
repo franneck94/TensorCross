@@ -3,7 +3,7 @@
 import unittest
 
 
-def main_tests():
+def main_tests() -> None:
     unittest.main()
 
 
