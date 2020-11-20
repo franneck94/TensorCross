@@ -1,7 +1,7 @@
 import numpy as np
 import tensorflow as tf
 
-from typing import Any, Callable, Dict
+from typing import Any, Callable, Dict, Iterable
 from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import ParameterGrid
 
@@ -10,9 +10,9 @@ class GridSearch:
     def __init__(
         self,
         model_fn: Callable,
-        parameter_grid: Dict[str, Any],
+        parameter_grid: Dict[str, Iterable],
         n_iter: int = 10,
-        verbose: bool = False,
+        verbose: int = 0,
         **kwargs: Any
     ) -> None:
         self.model_fn = model_fn
@@ -30,7 +30,7 @@ class GridSearch:
     def fit(
         self,
         train_dataset: tf.data.Dataset,
-        val_dataset: tf.data.Dataset = None,
+        val_dataset: tf.data.Dataset,
         **kwargs: Any
     ) -> None:
         for idx, grid_combination in enumerate(self.parameter_grid):
