@@ -99,7 +99,7 @@ class RandomSearchTests(unittest.TestCase):
         self.num_features = self.data.num_features
         self.num_targets = self.data.num_targets
 
-        self.epochs = 3
+        self.epochs = 1
 
         self.param_distributions = {
             "optimizer": [
@@ -121,7 +121,14 @@ class RandomSearchTests(unittest.TestCase):
         )
 
     def test_random_search(self) -> None:
-        self.assertEqual(True, True)  # Dummy Test
+        self.rand_search.fit(
+            train_dataset=self.train_dataset,
+            val_dataset=self.val_dataset,
+            epochs=self.epochs,
+            verbose=1
+        )
+
+        self.rand_search.summary()
 
 
 if __name__ == '__main__':
