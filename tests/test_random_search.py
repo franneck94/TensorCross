@@ -115,7 +115,7 @@ class RandomSearchTests(unittest.TestCase):
             model_fn=self.build_model,
             param_distributions=self.param_distributions,
             n_iter=2,
-            verbose=False,
+            verbose=1,
             num_features=self.num_features,
             num_targets=self.num_targets
         )

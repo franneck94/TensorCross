@@ -113,7 +113,7 @@ class GridSearchTests(unittest.TestCase):
         self.grid_search = GridSearch(
             model_fn=self.build_model,
             parameter_grid=self.parameter_grid,
-            verbose=False,
+            verbose=1,
             num_features=self.num_features,
             num_targets=self.num_targets
         )

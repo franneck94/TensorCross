@@ -109,7 +109,7 @@ if __name__ == "__main__":
         model_fn=build_model,
         parameter_grid=parameter_grid,
         n_iter=2,
-        verbose=False,
+        verbose=1,
         num_features=num_features,
         num_targets=num_targets
     )
