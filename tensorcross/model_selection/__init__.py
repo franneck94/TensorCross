@@ -10,7 +10,25 @@ from sklearn.model_selection import ParameterSampler
 
 
 class BaseSearch:
-    def __init__(self) -> None:
+    """RandomSearch for a given parameter distribution.
+
+        Args:
+            model_fn (Callable): Function that builds and compiles a
+                tf.keras.Model or tf.keras.Sequential object.
+            verbose (int, optional): Whether to show information in terminal.
+                Defaults to 0.
+            kwargs (Any): Keyword arguments for the model_fn function.
+        """
+
+    def __init__(
+        self,
+        model_fn: Callable,
+        verbose: int = 0,
+        **kwargs: Any
+    ) -> None:
+        self.model_fn = model_fn
+        self.verbose = verbose
+        self.model_fn_kwargs = kwargs
         self.results_ = {
             "best_score": -np.inf,
             "best_params": {},
@@ -19,16 +37,20 @@ class BaseSearch:
         }
 
     def summary(self) -> None:
-        print(
-            f"Best score: {self.results_['best_score']} "
-            f"using params: {self.results_['best_params']}\n"
-        )
+        """Prints the summary of the search to the console.
+        """
+        best_params_str = (f"Best score: {self.results_['best_score']} "
+                           f"using params: {self.results_['best_params']}")
+        dashed_line = "".join(map(lambda x: "-", best_params_str))
+        print(f"\n{dashed_line}\n{best_params_str}\n{dashed_line}")
 
         scores = self.results_["val_scores"]
         params = self.results_["params"]
 
         for idx, (score, param) in enumerate(zip(scores, params)):
             print(f"Idx: {idx} - Score: {score} with param: {param}")
+
+        print(f"{dashed_line}\n")
 
 
 class GridSearch(BaseSearch):
@@ -50,13 +72,15 @@ class GridSearch(BaseSearch):
             n_iter (int, optional): Number of random models. Defaults to 10.
             verbose (int, optional): Whether to show information in terminal.
                 Defaults to 0.
+            kwargs (Any): Keyword arguments for the model_fn function.
         """
-        super().__init__()
-        self.model_fn = model_fn
+        super().__init__(
+            model_fn,
+            verbose,
+            **kwargs
+        )
         self.parameter_grid = ParameterGrid(parameter_grid)
         self.n_iter = n_iter
-        self.verbose = verbose
-        self.model_fn_kwargs = kwargs
 
     def fit(
         self,
@@ -64,14 +88,15 @@ class GridSearch(BaseSearch):
         val_dataset: tf.data.Dataset,
         **kwargs: Any
     ) -> None:
-        """[summary]
+        """Runs the exhaustive grid search over the parameter grid.
 
         Args:
             train_dataset (tf.data.Dataset): tf.data.Dataset object for the
                 training.
-            val_dataset (tf.data.Dataset, optional): tf.data.Dataset object for
+            val_dataset (tf.data.Dataset): tf.data.Dataset object for
                 the validation.
-            kwargs (Any): Keyword arguments for the build model_fn.
+            kwargs (Any): Keyword arguments for the fit method of the
+                tf.keras.models.Model or tf.keras.models.Sequential model.
         """
         for idx, grid_combination in enumerate(self.parameter_grid):
             if self.verbose:
@@ -118,17 +143,19 @@ class RandomSearch(BaseSearch):
             n_iter (int, optional): Number of random models. Defaults to 10.
             verbose (int, optional): Whether to show information in terminal.
                 Defaults to 0.
+            kwargs (Any): Keyword arguments for the model_fn function.
         """
-        super().__init__()
-        self.model_fn = model_fn
+        super().__init__(
+            model_fn,
+            verbose,
+            **kwargs
+        )
         self.param_distributions = param_distributions
         self.n_iter = n_iter
-        self.verbose = verbose
         self.random_sampler = ParameterSampler(
             self.param_distributions,
             n_iter=self.n_iter
         )
-        self.model_fn_kwargs = kwargs
 
     def fit(
         self,
@@ -136,14 +163,15 @@ class RandomSearch(BaseSearch):
         val_dataset: tf.data.Dataset,
         **kwargs: Any
     ) -> None:
-        """[summary]
+        """Runs the random search over the parameter distributions.
 
         Args:
             train_dataset (tf.data.Dataset): tf.data.Dataset object for the
                 training.
-            val_dataset (tf.data.Dataset, optional): tf.data.Dataset object for
+            val_dataset (tf.data.Dataset): tf.data.Dataset object for
                 the validation.
-            kwargs (Any): Keyword arguments for the build model_fn.
+            kwargs (Any): Keyword arguments for the fit method of the
+                tf.keras.models.Model or tf.keras.models.Sequential model.
         """
         for idx, random_combination in enumerate(self.random_sampler):
             if self.verbose:
