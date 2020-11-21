@@ -98,7 +98,7 @@ class GridSearchTests(unittest.TestCase):
         self.num_features = self.data.num_features
         self.num_targets = self.data.num_targets
 
-        self.epochs = 3
+        self.epochs = 1
 
         self.parameter_grid = {
             "optimizer": [
@@ -110,7 +110,7 @@ class GridSearchTests(unittest.TestCase):
 
         self.build_model = build_model
 
-        self.rand_search = GridSearch(
+        self.grid_search = GridSearch(
             model_fn=self.build_model,
             parameter_grid=self.parameter_grid,
             verbose=False,
@@ -119,7 +119,14 @@ class GridSearchTests(unittest.TestCase):
         )
 
     def test_grid_search(self) -> None:
-        self.assertEqual(True, True)  # Dummy Test
+        self.grid_search.fit(
+            train_dataset=self.train_dataset,
+            val_dataset=self.val_dataset,
+            epochs=self.epochs,
+            verbose=1
+        )
+
+        self.grid_search.summary()
 
 
 if __name__ == '__main__':
