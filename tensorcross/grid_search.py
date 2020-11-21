@@ -1,8 +1,12 @@
+from typing import Any
+from typing import Callable
+from typing import Dict
+from typing import Iterable
+
 import numpy as np
 import tensorflow as tf
-
-from typing import Any, Callable, Dict, Iterable
 from sklearn.model_selection import ParameterGrid
+
 
 class GridSearch:
     def __init__(
