@@ -1,22 +1,28 @@
-name: Workflow for Codecov
-on: [push]
+name: Codecov
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
 jobs:
-  run:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ubuntu-latest]
-    env:
-      OS: ${{ matrix.os }}
-      PYTHON: '3.8'
+  build:
+
+    runs-on: ubuntu-latest
+
     steps:
-    - uses: actions/checkout@master
-    - name: Setup Python
-      uses: actions/setup-python@master
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
       with:
         python-version: 3.8
-    - name: Generate coverage report
+    - name: Install dependencies
       run: |
+        python -m pip install --upgrade pip
         pip install -r requirements.txt
-        pytest --cov=tensorcross tests
-    - name: Upload coverage to Codecov
+        python setup.py develop
+    - name: Coverage
+      run: |
+        make test-coverage
+        codecov
