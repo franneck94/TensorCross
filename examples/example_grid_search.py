@@ -50,15 +50,6 @@ class DATA:
             (x_val, y_val)
         )
 
-    def get_train_set(self) -> tf.data.Dataset:
-        return self.train_dataset
-
-    def get_test_set(self) -> tf.data.Dataset:
-        return self.test_dataset
-
-    def get_val_set(self) -> tf.data.Dataset:
-        return self.val_dataset
-
 
 def build_model(
     num_features: int,
@@ -66,13 +57,10 @@ def build_model(
     optimizer: tf.keras.optimizers.Optimizer,
     learning_rate: float
 ) -> tf.keras.models.Model:
+    """Build the test model.
+    """
     x_input = tf.keras.layers.Input(shape=num_features)
-
-    x = tf.keras.layers.Dense(units=10)(x_input)
-    x = tf.keras.layers.Activation("relu")(x)
-    x = tf.keras.layers.Dense(units=num_targets)(x)
-    y_pred = tf.keras.layers.Activation("softmax")(x)
-
+    y_pred = tf.keras.layers.Dense(units=num_targets)(x_input)
     model = tf.keras.models.Model(inputs=[x_input], outputs=[y_pred])
 
     opt = optimizer(learning_rate=learning_rate)
@@ -87,15 +75,7 @@ def build_model(
 if __name__ == "__main__":
     data = DATA()
 
-    train_dataset = data.get_train_set()
-    val_dataset = data.get_val_set()
-
-    num_features = data.num_features
-    num_targets = data.num_targets
-
-    epochs = 1
-
-    parameter_grid = {
+    param_grid = {
         "optimizer": [
             tf.keras.optimizers.Adam,
             tf.keras.optimizers.RMSprop
@@ -103,21 +83,19 @@ if __name__ == "__main__":
         "learning_rate": [0.001, 0.0001]
     }
 
-    build_model = build_model
-
     grid_search = GridSearch(
         model_fn=build_model,
-        parameter_grid=parameter_grid,
+        param_grid=param_grid,
         n_iter=2,
         verbose=1,
-        num_features=num_features,
-        num_targets=num_targets
+        num_features=data.num_features,
+        num_targets=data.num_targets
     )
 
     grid_search.fit(
-        train_dataset=train_dataset,
-        val_dataset=val_dataset,
-        epochs=3,
+        train_dataset=data.train_dataset,
+        val_dataset=data.val_dataset,
+        epochs=1,
         verbose=1
     )
 

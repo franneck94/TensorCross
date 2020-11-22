@@ -55,15 +55,6 @@ class DATA:
             (x_val, y_val)
         )
 
-    def get_train_set(self) -> tf.data.Dataset:
-        return self.train_dataset
-
-    def get_test_set(self) -> tf.data.Dataset:
-        return self.test_dataset
-
-    def get_val_set(self) -> tf.data.Dataset:
-        return self.val_dataset
-
 
 def build_model(
     num_features: int,
@@ -71,13 +62,10 @@ def build_model(
     optimizer: tf.keras.optimizers.Optimizer,
     learning_rate: float
 ) -> tf.keras.models.Model:
+    """Build the test model.
+    """
     x_input = tf.keras.layers.Input(shape=num_features)
-
-    x = tf.keras.layers.Dense(units=10)(x_input)
-    x = tf.keras.layers.Activation("relu")(x)
-    x = tf.keras.layers.Dense(units=num_targets)(x)
-    y_pred = tf.keras.layers.Activation("softmax")(x)
-
+    y_pred = tf.keras.layers.Dense(units=num_targets)(x_input)
     model = tf.keras.models.Model(inputs=[x_input], outputs=[y_pred])
 
     opt = optimizer(learning_rate=learning_rate)
@@ -92,14 +80,6 @@ def build_model(
 class RandomSearchTests(unittest.TestCase):
     def setUp(self) -> None:
         self.data = DATA()
-
-        self.train_dataset = self.data.get_train_set()
-        self.val_dataset = self.data.get_val_set()
-
-        self.num_features = self.data.num_features
-        self.num_targets = self.data.num_targets
-
-        self.epochs = 1
 
         self.param_distributions = {
             "optimizer": [
@@ -116,15 +96,15 @@ class RandomSearchTests(unittest.TestCase):
             param_distributions=self.param_distributions,
             n_iter=2,
             verbose=1,
-            num_features=self.num_features,
-            num_targets=self.num_targets
+            num_features=self.data.num_features,
+            num_targets=self.data.num_targets
         )
 
     def test_random_search(self) -> None:
         self.rand_search.fit(
-            train_dataset=self.train_dataset,
-            val_dataset=self.val_dataset,
-            epochs=self.epochs,
+            train_dataset=self.data.train_dataset,
+            val_dataset=self.data.val_dataset,
+            epochs=1,
             verbose=1
         )
 
