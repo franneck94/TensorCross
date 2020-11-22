@@ -25,7 +25,7 @@ README = ("Cross Validation, Grid Search and Random Search for TensorFlow "
           "Datasets. For more information see here: "
           "https://github.com/franneck94/TensorCross")
 
-VERSION = '0.1.0'
+VERSION = '0.1.1'
 ISRELEASED = False
 
 PYTHON_VERSION = "3.8"
