@@ -3,7 +3,7 @@ import tensorflow as tf
 from scipy.stats import uniform
 from sklearn.model_selection import train_test_split
 
-from tensorcross import RandomSearch
+from tensorcross.model_selection import RandomSearch
 
 
 np.random.seed(0)
