@@ -22,7 +22,7 @@ class DATA:
         # User-definen constants
         self.num_targets = 1
         self.batch_size = 128
-        # Load the data set
+        # Load the dataset
         x = np.random.uniform(low=-10.0, high=10.0, size=100)
         y = f(x) + np.random.normal(size=100)
         x = x.reshape(-1, 1).astype(np.float32)
