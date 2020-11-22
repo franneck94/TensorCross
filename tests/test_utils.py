@@ -1,4 +1,4 @@
-"""Test code for the grid search.
+"""Test code for the random search.
 """
 import unittest
 
@@ -6,7 +6,7 @@ import numpy as np
 import tensorflow as tf
 from sklearn.model_selection import train_test_split
 
-from tensorcross.model_selection import GridSearch
+from tensorcross.utils import dataset_split
 
 
 np.random.seed(0)
@@ -55,58 +55,24 @@ class DATA:
         )
 
 
-def build_model(
-    num_features: int,
-    num_targets: int,
-    optimizer: tf.keras.optimizers.Optimizer,
-    learning_rate: float
-) -> tf.keras.models.Model:
-    """Build the test model.
-    """
-    x_input = tf.keras.layers.Input(shape=num_features)
-    y_pred = tf.keras.layers.Dense(units=num_targets)(x_input)
-    model = tf.keras.models.Model(inputs=[x_input], outputs=[y_pred])
-
-    opt = optimizer(learning_rate=learning_rate)
-
-    model.compile(
-        loss="mse", optimizer=opt, metrics=["mse"]
-    )
-
-    return model
-
-
-class GridSearchTests(unittest.TestCase):
+class RandomSearchTests(unittest.TestCase):
     def setUp(self) -> None:
         self.data = DATA()
 
-        self.param_grid = {
-            "optimizer": [
-                tf.keras.optimizers.Adam,
-                tf.keras.optimizers.RMSprop
-            ],
-            "learning_rate": [0.001, 0.0001]
-        }
-
-        self.build_model = build_model
-
-        self.grid_search = GridSearch(
-            model_fn=self.build_model,
-            param_grid=self.param_grid,
-            verbose=1,
-            num_features=self.data.num_features,
-            num_targets=self.data.num_targets
+    def test_train_validation_split(self) -> None:
+        split_size = 0.3
+        train_dataset, val_dataset = dataset_split(
+            self.data.train_dataset,
+            split_size=split_size
         )
-
-    def test_grid_search(self) -> None:
-        self.grid_search.fit(
-            train_dataset=self.data.train_dataset,
-            val_dataset=self.data.val_dataset,
-            epochs=1,
-            verbose=1
+        self.assertEqual(
+            len(val_dataset),
+            int(len(self.data.train_dataset) * split_size)
         )
-
-        self.grid_search.summary()
+        self.assertEqual(
+            len(val_dataset) + len(train_dataset),
+            len(self.data.train_dataset)
+        )
 
 
 if __name__ == '__main__':

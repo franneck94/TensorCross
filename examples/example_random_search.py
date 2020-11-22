@@ -18,12 +18,12 @@ class DATA:
     def __init__(
         self,
         test_size: float = 0.2,
-        validation_size: float = 0.33
+        split_size: float = 0.33
     ) -> None:
         # User-definen constants
         self.num_targets = 1
         self.batch_size = 128
-        # Load the data set
+        # Load the dataset
         x = np.random.uniform(low=-10.0, high=10.0, size=100)
         y = f(x) + np.random.normal(size=100)
         x = x.reshape(-1, 1).astype(np.float32)
@@ -33,7 +33,7 @@ class DATA:
             x, y, test_size=test_size
         )
         x_train, x_val, y_train, y_val = train_test_split(
-            x_train, y_train, test_size=validation_size
+            x_train, y_train, test_size=split_size
         )
         # Dataset attributes
         self.train_size = x_train.shape[0]
