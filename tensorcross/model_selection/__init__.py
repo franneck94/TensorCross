@@ -1,12 +1,12 @@
 from .search import GridSearch
 from .search import RandomSearch
-
-
-# TODO: Import GridSearchCV and RandomSearchCV when finished
+from .search_cv import GridSearchCV
+from .search_cv import RandomSearchCV
 
 
 __all__ = [
     "GridSearch",
-    "RandomSearch"
-    # TODO: Add GridSearchCV and RandomSearchCV when finished
+    "RandomSearch",
+    "GridSearchCV",
+    "RandomSearchCV"
 ]

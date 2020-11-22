@@ -22,7 +22,7 @@ copyright = '2020, Jan Schaffranek'  # pylint: disable=W0622
 author = 'Jan Schaffranek'
 
 # The full version, including alpha/beta/rc tags
-release = '0.1.0b'
+release = '0.1.1'
 
 
 # -- General configuration ---------------------------------------------------

@@ -1,9 +1,13 @@
+"""Test code for the random search.
+"""
+import unittest
+
 import numpy as np
 import tensorflow as tf
 from scipy.stats import uniform
 from sklearn.model_selection import train_test_split
 
-from tensorcross.model_selection import RandomSearch
+from tensorcross.model_selection import RandomSearchCV
 
 
 np.random.seed(0)
@@ -51,15 +55,6 @@ class DATA:
             (x_val, y_val)
         )
 
-    def get_train_set(self) -> tf.data.Dataset:
-        return self.train_dataset
-
-    def get_test_set(self) -> tf.data.Dataset:
-        return self.test_dataset
-
-    def get_val_set(self) -> tf.data.Dataset:
-        return self.val_dataset
-
 
 def build_model(
     num_features: int,
@@ -82,41 +77,23 @@ def build_model(
     return model
 
 
-if __name__ == "__main__":
-    data = DATA()
+class RandomSearchTests(unittest.TestCase):
+    def setUp(self) -> None:
+        self.data = DATA()
 
-    train_dataset = data.get_train_set()
-    val_dataset = data.get_val_set()
+        self.param_distributions = {
+            "optimizer": [
+                tf.keras.optimizers.Adam,
+                tf.keras.optimizers.RMSprop
+            ],
+            "learning_rate": uniform(0.001, 0.0001)
+        }
 
-    num_features = data.num_features
-    num_targets = data.num_targets
+        self.build_model = build_model
 
-    epochs = 1
+    def test_random_search_cv(self) -> None:
+        pass
 
-    param_distributions = {
-        "optimizer": [
-            tf.keras.optimizers.Adam,
-            tf.keras.optimizers.RMSprop
-        ],
-        "learning_rate": uniform(0.001, 0.0001)
-    }
 
-    build_model = build_model
-
-    rand_search = RandomSearch(
-        model_fn=build_model,
-        param_distributions=param_distributions,
-        n_iter=2,
-        verbose=1,
-        num_features=num_features,
-        num_targets=num_targets
-    )
-
-    rand_search.fit(
-        train_dataset=train_dataset,
-        val_dataset=val_dataset,
-        epochs=3,
-        verbose=1
-    )
-
-    rand_search.summary()
+if __name__ == '__main__':
+    unittest.main()
