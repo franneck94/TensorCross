@@ -23,7 +23,7 @@ class DATA:
         # User-definen constants
         self.num_targets = 1
         self.batch_size = 128
-        # Load the data set
+        # Load the dataset
         x = np.random.uniform(low=-10.0, high=10.0, size=100)
         y = f(x) + np.random.normal(size=100)
         x = x.reshape(-1, 1).astype(np.float32)
@@ -67,13 +67,10 @@ def build_model(
     optimizer: tf.keras.optimizers.Optimizer,
     learning_rate: float
 ) -> tf.keras.models.Model:
+    """Build the test model.
+    """
     x_input = tf.keras.layers.Input(shape=num_features)
-
-    x = tf.keras.layers.Dense(units=10)(x_input)
-    x = tf.keras.layers.Activation("relu")(x)
-    x = tf.keras.layers.Dense(units=num_targets)(x)
-    y_pred = tf.keras.layers.Activation("softmax")(x)
-
+    y_pred = tf.keras.layers.Dense(units=num_targets)(x_input)
     model = tf.keras.models.Model(inputs=[x_input], outputs=[y_pred])
 
     opt = optimizer(learning_rate=learning_rate)
