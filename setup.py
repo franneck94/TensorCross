@@ -1,4 +1,5 @@
-from .tensorcross.version import __version__
+from tensorcross.version import __version__
+
 from setuptools import find_packages
 from setuptools import setup
 
