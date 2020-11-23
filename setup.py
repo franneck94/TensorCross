@@ -1,5 +1,6 @@
 from tensorcross.version import __version__
 
+from setuptools import find_packages
 from setuptools import setup
 
 
@@ -32,7 +33,7 @@ INSTALL_REQUIRES = [
     "scikit-learn"
 ]
 
-PACKAGES = ['tensorcross']
+PACKAGES = find_packages(include=["tensorcross", "tensorcross.*"])
 
 metadata = dict(
     name=DISTNAME,
