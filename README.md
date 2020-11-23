@@ -129,23 +129,12 @@ This python package aims to help with this use-case.
     rand_search.summary()
 ```
 
+## Issues
+
+If you want to open an issue, it must be a bug, a feature request, or a significant problem with the documentation.
+For more information see: [ISSUES.md](ISSUES.md)
+
 ## Contributions
 
 You are free to make contributions to the repository.
-Please install the required packages by:
-
-```bash
-pip install -r requirements.txt
-```
-
-Also install the pre-commit hook by:
-
-```bash
-pre-commit install
-```
-
-Tests can be executed by:
-
-```bash
-pytest ./tests/
-```
+For more information see: [CONTRIBUTIONS.md](CONTRIBUTIONS.md)
