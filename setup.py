@@ -1,3 +1,6 @@
+from tensorcross.version import __version__
+
+from setuptools import find_packages
 from setuptools import setup
 
 
@@ -25,15 +28,17 @@ README = ("Cross Validation, Grid Search and Random Search for TensorFlow "
           "Datasets. For more information see here: "
           "https://github.com/franneck94/TensorCross")
 
-VERSION = '0.1.1'
+VERSION = __version__
 ISRELEASED = False
 
 PYTHON_VERSION = "3.8"
-
-PACKAGES = [
-    "tensorcross",
-    "tests"
+INSTALL_REQUIRES = [
+    "tensorflow==2.3.1",
+    "numpy==1.18.*",
+    "scikit-learn"
 ]
+
+PACKAGES = find_packages(include="tensorcross")
 
 metadata = dict(
     name=DISTNAME,
@@ -42,6 +47,7 @@ metadata = dict(
     packages=PACKAGES,
     author=AUTHORS,
     python_requires=f"=={PYTHON_VERSION}",
+    install_requires=INSTALL_REQUIRES,
     description=DESCRIPTION,
     classifiers=[CLASSIFIERS],
     license=LICENSE,

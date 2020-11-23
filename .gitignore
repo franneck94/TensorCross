@@ -2,6 +2,8 @@
 *.txt
 *.isorted
 !requirements.txt
+build/
+!docs/build/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -13,7 +15,6 @@ __pycache__/
 
 # Distribution / packaging
 .Python
-build/
 develop-eggs/
 dist/
 downloads/
@@ -67,9 +68,6 @@ instance/
 
 # Scrapy stuff:
 .scrapy
-
-# Sphinx documentation
-docs/build/
 
 # PyBuilder
 target/
