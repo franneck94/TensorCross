@@ -1,21 +1,12 @@
----
-name: ISSUES
-about: Describe this issue template's purpose here.
-title: ''
-labels: ''
-assignees: ''
-
----
-
 ### If you open a GitHub issue, here is our policy
 
 It must be a bug, a feature request, or a significant problem with the documentation (for small docs fixes please send a PR instead).
 
 ### System information
 
-OS Platform and Distribution:
-TensorFlow version:
-Python version:
+OS Platform and Distribution:  
+TensorFlow version:  
+Python version:  
 
 ### Source code / logs
 
