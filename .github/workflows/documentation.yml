@@ -22,15 +22,10 @@ jobs:
         pip install -r requirements.txt
         python setup.py develop
     # Standard drop-in approach that should work for most people.
-    - uses: ammaraskar/sphinx-action@master
-      with:
-        docs-folder: "docs/"
-    # Great extra actions to compose with:
-    # Create an artifact of the html output.
-    - uses: actions/upload-artifact@v1
-      with:
-        name: DocumentationHTML
-        path: docs/build/html/
+    - name: Build Documentation
+      run: |
+        cd docs/
+        ./build_docs.sh
     # Publish built docs to gh-pages branch.
     # ===============================
     - name: Commit documentation changes
