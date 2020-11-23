@@ -1,12 +1,6 @@
 from tensorcross.version import __version__
 
-from setuptools import find_packages
 from setuptools import setup
-
-
-def get_license() -> str:
-    with open("LICENSE") as f:
-        return f.read()
 
 
 CLASSIFIERS = """\
@@ -23,7 +17,7 @@ DISTNAME = "tensorcross"
 AUTHORS = "Jan Schaffranek, Saif Al-Dilaimi"
 DESCRIPTION = ("Cross Validation, Grid Search and Random Search "
                "for TensorFlow Datasets.")
-LICENSE = get_license()
+LICENSE = "MIT"
 README = ("Cross Validation, Grid Search and Random Search for TensorFlow "
           "Datasets. For more information see here: "
           "https://github.com/franneck94/TensorCross")
@@ -38,7 +32,7 @@ INSTALL_REQUIRES = [
     "scikit-learn"
 ]
 
-PACKAGES = find_packages(include="tensorcross")
+PACKAGES = ['tensorcross']
 
 metadata = dict(
     name=DISTNAME,
@@ -50,7 +44,7 @@ metadata = dict(
     install_requires=INSTALL_REQUIRES,
     description=DESCRIPTION,
     classifiers=[CLASSIFIERS],
-    license=LICENSE,
+    license=LICENSE
 )
 
 
