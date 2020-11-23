@@ -24,4 +24,4 @@ jobs:
         python setup.py develop
     - name: Test
       run: |
-        make test
+        pytest tests
