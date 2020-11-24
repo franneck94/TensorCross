@@ -91,6 +91,8 @@ class RandomSearchTests(unittest.TestCase):
 
         self.build_model = build_model
 
+        self.rand_search_cv = RandomSearchCV()
+
     def test_random_search_cv(self) -> None:
         pass
 
