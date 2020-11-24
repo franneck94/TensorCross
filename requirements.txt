@@ -1,12 +1,10 @@
 # TensorFLow Libraries
 tensorflow==2.3.1
 tensorflow-datasets
-tensorflow-addons
 
 # Libraries
 scikit-learn
 scipy
-scikit-image
 numpy==1.18.*
 
 # Linting/Tooling
@@ -23,12 +21,6 @@ pytest
 codecov
 pytest-cov
 tox
-
-# Documentation
-Sphinx
-Pygments
-numpydoc
-sphinx_rtd_theme
 
 # Packaging
 twine
