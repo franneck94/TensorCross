@@ -90,6 +90,8 @@ class GridSearchTests(unittest.TestCase):
 
         self.build_model = build_model
 
+        self.grid_search_cv = GridSearchCV()
+
     def test_grid_search_cv(self) -> None:
         pass
 

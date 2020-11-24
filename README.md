@@ -133,9 +133,9 @@ This python package aims to help with this use-case.
 ## Issues
 
 If you want to open an issue, it must be a bug, a feature request, or a significant problem with the documentation.
-For more information see: [ISSUES.md](ISSUES.md)
+For more information see [here](.github/ISSUE_TEMPLATE/).
 
-## Contributions
+## Pull Requests
 
 You are free to make contributions to the repository.
-For more information see: [CONTRIBUTIONS.md](CONTRIBUTIONS.md)
+For more information see [here](.github/PULL_REQUEST_TEMPLATE/).
