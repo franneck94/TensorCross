@@ -124,8 +124,10 @@ class GridSearch(BaseSearch):
         The grid search is evaluated by the either the validation loss value,
         if no metrics are passed to the compile function, otherweise the
         validation score of the last defined metric is used.
-        For example::
+        .. code-block:: python
+
             model.compile(loss="mse", metrics=["mse", "mae"])
+
         This would sort the grid search combinations based on the validation
         mae score.
 
@@ -183,8 +185,10 @@ class RandomSearch(BaseSearch):
         The random search is evaluated by the either the validation loss value,
         if no metrics are passed to the compile function, otherweise the
         validation score of the last defined metric is used.
-        For example::
+        .. code-block:: python
+
             model.compile(loss="mse", metrics=["mse", "mae"])
+
         This would sort the random search combinations based on the validation
         mae score.
 
