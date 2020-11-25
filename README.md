@@ -63,7 +63,6 @@ This python package aims to help with this use-case.
     grid_search = GridSearch(
         model_fn=build_model,
         param_grid=param_grid,
-        n_iter=2,
         verbose=1,
         num_features=data.num_features,
         num_targets=data.num_targets

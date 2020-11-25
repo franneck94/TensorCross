@@ -76,7 +76,7 @@ def build_model(
     opt = optimizer(learning_rate=learning_rate)
 
     model.compile(
-        loss="mse", optimizer=opt, metrics=["mse"]
+        loss="mse", optimizer=opt, metrics=["mae"]
     )
 
     return model
