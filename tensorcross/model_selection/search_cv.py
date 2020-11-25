@@ -8,9 +8,9 @@ class BaseSearchCV(metaclass=ABCMeta):
 
 class GridSearchCV(BaseSearchCV):
     def __init__(self) -> None:
-        pass
+        super().__init__()
 
 
 class RandomSearchCV(BaseSearchCV):
     def __init__(self) -> None:
-        pass
+        super().__init__()

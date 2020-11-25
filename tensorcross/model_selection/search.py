@@ -13,7 +13,7 @@ from sklearn.model_selection import ParameterSampler
 
 
 class BaseSearch(metaclass=ABCMeta):
-    """RandomSearch for a given parameter distribution.
+    """Abstract BaseSearch class for the grid or random search.
 
         Args:
             model_fn (Callable): Function that builds and compiles a
@@ -75,7 +75,7 @@ class BaseSearch(metaclass=ABCMeta):
             val_metric = model.evaluate(
                 val_dataset,
                 verbose=0
-            )[1]
+            )[-1]
             self.results_["val_scores"].append(val_metric)
             self.results_["params"].append(grid_combination)
 
@@ -85,6 +85,17 @@ class BaseSearch(metaclass=ABCMeta):
 
     def summary(self) -> None:
         """Prints the summary of the search to the console.
+
+        Assuming the *RandomSearch* had n iterations or the
+        *GridSearch* had n combinations in total, the output
+        would have the following structure::
+            --------------------------------------------------
+            Best score: ``float`` using params: ``dict``
+            --------------------------------------------------
+            Idx: 0   - Score: ``float`` using params: ``dict``
+            ...
+            Idx: n-1 - Score: ``float`` using params: ``dict``
+            --------------------------------------------------
         """
         best_params_str = (f"Best score: {self.results_['best_score']} "
                            f"using params: {self.results_['best_params']}")
@@ -105,18 +116,24 @@ class GridSearch(BaseSearch):
         self,
         model_fn: Callable,
         param_grid: Mapping,
-        n_iter: int = 10,
         verbose: int = 0,
         **kwargs: Any
     ) -> None:
-        """RandomSearch for a given parameter distribution.
+        """GridSearch for a given parameter grid.
+
+        The grid search is evaluated by the either the validation loss value,
+        if no metrics are passed to the compile function, otherweise the
+        validation score of the last defined metric is used.
+        For example::
+            model.compile(loss="mse", metrics=["mse", "mae"])
+        This would sort the grid search combinations based on the validation
+        mae score.
 
         Args:
             model_fn (Callable): Function that builds and compiles a
                 tf.keras.Model or tf.keras.Sequential object.
             param_grid (Dict[str, Iterable]): Dict of str, iterable
                 hyperparameter, where the str is the parameter name of the.
-            n_iter (int, optional): Number of random models. Defaults to 10.
             verbose (int, optional): Whether to show information in terminal.
                 Defaults to 0.
             kwargs (Any): Keyword arguments for the model_fn function.
@@ -127,7 +144,6 @@ class GridSearch(BaseSearch):
             **kwargs
         )
         self.param_grid = ParameterGrid(param_grid)
-        self.n_iter = n_iter
 
     def fit(
         self,
@@ -163,6 +179,14 @@ class RandomSearch(BaseSearch):
         **kwargs: Any
     ) -> None:
         """RandomSearch for a given parameter distribution.
+
+        The random search is evaluated by the either the validation loss value,
+        if no metrics are passed to the compile function, otherweise the
+        validation score of the last defined metric is used.
+        For example::
+            model.compile(loss="mse", metrics=["mse", "mae"])
+        This would sort the random search combinations based on the validation
+        mae score.
 
         Args:
             model_fn (Callable): Function that builds and compiles a
