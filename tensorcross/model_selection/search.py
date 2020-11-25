@@ -15,13 +15,13 @@ from sklearn.model_selection import ParameterSampler
 class BaseSearch(metaclass=ABCMeta):
     """Abstract BaseSearch class for the grid or random search.
 
-        Args:
-            model_fn (Callable): Function that builds and compiles a
-                tf.keras.Model or tf.keras.Sequential object.
-            verbose (int, optional): Whether to show information in terminal.
-                Defaults to 0.
-            kwargs (Any): Keyword arguments for the model_fn function.
-        """
+    Args:
+        model_fn (Callable): Function that builds and compiles a
+            tf.keras.Model or tf.keras.Sequential object.
+        verbose (int, optional): Whether to show information in terminal.
+            Defaults to 0.
+        kwargs (Any): Keyword arguments for the model_fn function.
+    """
     @abstractmethod
     def __init__(
         self,
