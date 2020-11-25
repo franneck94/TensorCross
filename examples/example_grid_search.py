@@ -66,7 +66,7 @@ def build_model(
     opt = optimizer(learning_rate=learning_rate)
 
     model.compile(
-        loss="mse", optimizer=opt, metrics=["mse"]
+        loss="mse", optimizer=opt, metrics=["mae"]
     )
 
     return model
@@ -86,7 +86,6 @@ if __name__ == "__main__":
     grid_search = GridSearch(
         model_fn=build_model,
         param_grid=param_grid,
-        n_iter=2,
         verbose=1,
         num_features=data.num_features,
         num_targets=data.num_targets
