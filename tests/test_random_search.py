@@ -24,35 +24,16 @@ class DATA:
         test_size: float = 0.2,
         validation_size: float = 0.33
     ) -> None:
-        # User-definen constants
-        self.num_targets = 1
-        self.batch_size = 128
-        # Load the dataset
         x = np.random.uniform(low=-10.0, high=10.0, size=100)
         y = f(x) + np.random.normal(size=100)
-        x = x.reshape(-1, 1).astype(np.float32)
-        y = y.reshape(-1, 1).astype(np.float32)
-        # Split the dataset
-        x_train, x_test, y_train, y_test = train_test_split(
+        x_train, x_val, y_train, y_val = train_test_split(
             x, y, test_size=test_size
         )
-        x_train, x_val, y_train, y_val = train_test_split(
-            x_train, y_train, test_size=validation_size
-        )
-        # Dataset attributes
-        self.train_size = x_train.shape[0]
-        self.test_size = x_test.shape[0]
-        self.val_size = x_val.shape[0]
-        self.num_features = x_train.shape[1]
-        # tf.data Datasets
         self.train_dataset = tf.data.Dataset.from_tensor_slices(
-            (x_train, y_train)
-        )
-        self.test_dataset = tf.data.Dataset.from_tensor_slices(
-            (x_test, y_test)
+            (x_train.reshape(-1, 1), y_train.reshape(-1, 1))
         )
         self.val_dataset = tf.data.Dataset.from_tensor_slices(
-            (x_val, y_val)
+            (x_val.reshape(-1, 1), y_val.reshape(-1, 1))
         )
 
 
@@ -79,9 +60,11 @@ def build_model(
 
 class RandomSearchTests(unittest.TestCase):
     def setUp(self) -> None:
-        self.data = DATA()
+        data = DATA()
+        self.train_dataset = data.train_dataset
+        self.val_dataset = data.val_dataset
 
-        self.param_distributions = {
+        param_distributions = {
             "optimizer": [
                 tf.keras.optimizers.Adam,
                 tf.keras.optimizers.RMSprop
@@ -89,21 +72,19 @@ class RandomSearchTests(unittest.TestCase):
             "learning_rate": uniform(0.001, 0.0001)
         }
 
-        self.build_model = build_model
-
         self.rand_search = RandomSearch(
-            model_fn=self.build_model,
-            param_distributions=self.param_distributions,
+            model_fn=build_model,
+            param_distributions=param_distributions,
             n_iter=2,
             verbose=1,
-            num_features=self.data.num_features,
-            num_targets=self.data.num_targets
+            num_features=1,
+            num_targets=1
         )
 
     def test_random_search(self) -> None:
         self.rand_search.fit(
-            train_dataset=self.data.train_dataset,
-            val_dataset=self.data.val_dataset,
+            train_dataset=self.train_dataset,
+            val_dataset=self.val_dataset,
             epochs=1,
             verbose=1
         )

@@ -1,10 +1,9 @@
-"""Test code for the grid search.
+"""Test code for the grid search cv.
 """
 import unittest
 
 import numpy as np
 import tensorflow as tf
-from sklearn.model_selection import train_test_split
 
 from tensorcross.model_selection import GridSearchCV
 
@@ -18,40 +17,11 @@ def f(x: np.ndarray) -> np.ndarray:
 
 
 class DATA:
-    def __init__(
-        self,
-        test_size: float = 0.2,
-        validation_size: float = 0.33
-    ) -> None:
-        # User-definen constants
-        self.num_targets = 1
-        self.batch_size = 128
-        # Load the dataset
+    def __init__(self) -> None:
         x = np.random.uniform(low=-10.0, high=10.0, size=100)
         y = f(x) + np.random.normal(size=100)
-        x = x.reshape(-1, 1).astype(np.float32)
-        y = y.reshape(-1, 1).astype(np.float32)
-        # Split the dataset
-        x_train, x_test, y_train, y_test = train_test_split(
-            x, y, test_size=test_size
-        )
-        x_train, x_val, y_train, y_val = train_test_split(
-            x_train, y_train, test_size=validation_size
-        )
-        # Dataset attributes
-        self.train_size = x_train.shape[0]
-        self.test_size = x_test.shape[0]
-        self.val_size = x_val.shape[0]
-        self.num_features = x_train.shape[1]
-        # tf.data Datasets
         self.train_dataset = tf.data.Dataset.from_tensor_slices(
-            (x_train, y_train)
-        )
-        self.test_dataset = tf.data.Dataset.from_tensor_slices(
-            (x_test, y_test)
-        )
-        self.val_dataset = tf.data.Dataset.from_tensor_slices(
-            (x_val, y_val)
+            (x.reshape(-1, 1), y.reshape(-1, 1))
         )
 
 
@@ -78,9 +48,10 @@ def build_model(
 
 class GridSearchTests(unittest.TestCase):
     def setUp(self) -> None:
-        self.data = DATA()
+        data = DATA()
+        self.train_dataset = data.train_dataset
 
-        self.param_grid = {
+        param_grid = {
             "optimizer": [
                 tf.keras.optimizers.Adam,
                 tf.keras.optimizers.RMSprop
@@ -88,12 +59,23 @@ class GridSearchTests(unittest.TestCase):
             "learning_rate": [0.001, 0.0001]
         }
 
-        self.build_model = build_model
-
-        self.grid_search_cv = GridSearchCV()
+        self.grid_search_cv = GridSearchCV(
+            model_fn=build_model,
+            param_grid=param_grid,
+            n_folds=2,
+            verbose=1,
+            num_features=1,
+            num_targets=1
+        )
 
     def test_grid_search_cv(self) -> None:
-        pass
+        self.grid_search_cv.fit(
+            train_dataset=self.train_dataset,
+            epochs=1,
+            verbose=1
+        )
+
+        self.grid_search_cv.summary()
 
 
 if __name__ == '__main__':
