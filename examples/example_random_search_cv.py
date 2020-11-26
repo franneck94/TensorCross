@@ -1,7 +1,3 @@
-"""Test code for the random search.
-"""
-import unittest
-
 import numpy as np
 import tensorflow as tf
 from scipy.stats import uniform
@@ -47,38 +43,32 @@ def build_model(
     return model
 
 
-class RandomSearchTests(unittest.TestCase):
-    def setUp(self) -> None:
-        data = DATA()
-        self.train_dataset = data.train_dataset
+if __name__ == "__main__":
+    data = DATA()
+    train_dataset = data.train_dataset
 
-        param_distributions = {
-            "optimizer": [
-                tf.keras.optimizers.Adam,
-                tf.keras.optimizers.RMSprop
-            ],
-            "learning_rate": uniform(0.001, 0.0001)
-        }
+    param_distributions = {
+        "optimizer": [
+            tf.keras.optimizers.Adam,
+            tf.keras.optimizers.RMSprop
+        ],
+        "learning_rate": uniform(0.001, 0.0001)
+    }
 
-        self.rand_search_cv = RandomSearchCV(
-            model_fn=build_model,
-            param_distributions=param_distributions,
-            n_iter=2,
-            n_folds=2,
-            verbose=1,
-            num_features=1,
-            num_targets=1
-        )
+    rand_search_cv = RandomSearchCV(
+        model_fn=build_model,
+        param_distributions=param_distributions,
+        n_iter=2,
+        n_folds=2,
+        verbose=1,
+        num_features=1,
+        num_targets=1
+    )
 
-    def test_random_search_cv(self) -> None:
-        self.rand_search_cv.fit(
-            train_dataset=self.train_dataset,
-            epochs=1,
-            verbose=1
-        )
+    rand_search_cv.fit(
+        train_dataset=train_dataset,
+        epochs=1,
+        verbose=1
+    )
 
-        self.rand_search_cv.summary()
-
-
-if __name__ == '__main__':
-    unittest.main()
+    rand_search_cv.summary()
