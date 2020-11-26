@@ -18,7 +18,7 @@ class BaseSearch(metaclass=ABCMeta):
     Args:
         model_fn (Callable): Function that builds and compiles a
             tf.keras.Model or tf.keras.Sequential object.
-        verbose (int, optional): Whether to show information in terminal.
+        verbose (int): Whether to show information in terminal.
             Defaults to 0.
         kwargs (Any): Keyword arguments for the model_fn function.
     """
@@ -134,9 +134,9 @@ class GridSearch(BaseSearch):
         Args:
             model_fn (Callable): Function that builds and compiles a
                 tf.keras.Model or tf.keras.Sequential object.
-            param_grid (Dict[str, Iterable]): Dict of str, iterable
+            param_grid (Mapping): Dict of str, iterable
                 hyperparameter, where the str is the parameter name of the.
-            verbose (int, optional): Whether to show information in terminal.
+            verbose (int): Whether to show information in terminal.
                 Defaults to 0.
             kwargs (Any): Keyword arguments for the model_fn function.
         """
@@ -197,8 +197,8 @@ class RandomSearch(BaseSearch):
                 tf.keras.Model or tf.keras.Sequential object.
             param_distributions (Dict[str, Callable]): Dict of str, callable
                 pairs, where the str is the parameter name of the.
-            n_iter (int, optional): Number of random models. Defaults to 10.
-            verbose (int, optional): Whether to show information in terminal.
+            n_iter (int): Number of random models. Defaults to 10.
+            verbose (int): Whether to show information in terminal.
                 Defaults to 0.
             kwargs (Any): Keyword arguments for the model_fn function.
         """
