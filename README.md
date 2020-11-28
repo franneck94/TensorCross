@@ -25,16 +25,18 @@ This python package aims to help with this use-case.
 ## API
 
 - [GridSearch](#GridSearch-Example)
-- [RandomSearch](#RandomSearch-Example)
+- [GridSearchCV](#GridSearchCV-Example)
 - For more examples see: [here](examples/)
 
-### GridSearch Example
+### Dataset and TensorFlow Model for the Examples
 
 ```python
     import tensorflow as tf
-    from tensorcross.model_selection GridSearch
 
-    data = tf.data.Dataset()
+    dataset = tf.data.Dataset.from_tensor_slices(
+        (np.array([1, 2, 3]).reshape(-1, 1),  # x
+         np.array([-1, -2, -3]).reshape(-1, 1))  # y
+    )
 
     def build_model(
         optimizer: tf.keras.optimizers.Optimizer,
@@ -51,6 +53,21 @@ This python package aims to help with this use-case.
         )
 
         return model
+```
+
+The dataset must be a tf.data.Dataset object and you have to define a
+function/callable that returns a compiled tf.keras.models.Model object.
+This object will then be trained in e.g. the GridSearch.
+
+### GridSearch Example
+
+```python
+    from tensorcross.model_selection GridSearch
+
+    train_dataset, val_dataset = dataset_split(
+        dataset=dataset,
+        split_fraction=(1 / 3)
+    )
 
     param_grid = {
         "optimizer": [
@@ -69,8 +86,8 @@ This python package aims to help with this use-case.
     )
 
     grid_search.fit(
-        train_dataset=data.train_dataset,
-        val_dataset=data.val_dataset,
+        train_dataset=train_dataset,
+        val_dataset=val_dataset,
         epochs=1,
         verbose=1
     )
@@ -78,53 +95,33 @@ This python package aims to help with this use-case.
     grid_search.summary()
 ```
 
-### RandomSearch Example
+### GridSearchCV Example
 
 ```python
-    import tensorflow as tf
-    from tensorcross.model_selection RandomSearch
+    from tensorcross.model_selection GridSearch
 
-    data = tf.data.Dataset()
-
-    def build_model(
-        optimizer: tf.keras.optimizers.Optimizer,
-        learning_rate: float
-    ) -> tf.keras.models.Model:
-        x_input = tf.keras.layers.Input(shape=2)
-        y_pred = tf.keras.layers.Dense(units=1)(x_input)
-        model = tf.keras.models.Model(inputs=[x_input], outputs=[y_pred])
-
-        opt = optimizer(learning_rate=learning_rate)
-
-        model.compile(
-            loss="mse", optimizer=opt, metrics=["mse"]
-        )
-
-        return model
-
-    param_distributions = {
+    param_grid = {
         "optimizer": [
             tf.keras.optimizers.Adam,
             tf.keras.optimizers.RMSprop
         ],
-        "learning_rate": uniform(0.001, 0.0001)
+        "learning_rate": [0.001, 0.0001]
     }
 
-    rand_search = RandomSearch(
+    grid_search_cv = GridSearchCV(
         model_fn=build_model,
-        param_distributions=param_distributions,
-        n_iter=2,
+        param_grid=param_grid,
+        n_folds=2,
         verbose=1,
-        num_features=num_features,
-        num_targets=num_targets
+        num_features=1,
+        num_targets=1
     )
 
-    rand_search.fit(
-        train_dataset=train_dataset,
-        val_dataset=val_dataset,
-        epochs=3,
+    grid_search_cv.fit(
+        train_dataset=dataset,
+        epochs=1,
         verbose=1
     )
 
-    rand_search.summary()
+    grid_search_cv.summary()
 ```

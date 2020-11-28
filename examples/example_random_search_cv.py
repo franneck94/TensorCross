@@ -9,19 +9,6 @@ np.random.seed(0)
 tf.random.set_seed(0)
 
 
-def f(x: np.ndarray) -> np.ndarray:
-    return 2 * x + 1
-
-
-class DATA:
-    def __init__(self) -> None:
-        x = np.random.uniform(low=-10.0, high=10.0, size=100)
-        y = f(x) + np.random.normal(size=100)
-        self.train_dataset = tf.data.Dataset.from_tensor_slices(
-            (x.reshape(-1, 1), y.reshape(-1, 1))
-        )
-
-
 def build_model(
     num_features: int,
     num_targets: int,
@@ -44,8 +31,10 @@ def build_model(
 
 
 if __name__ == "__main__":
-    data = DATA()
-    train_dataset = data.train_dataset
+    dataset = tf.data.Dataset.from_tensor_slices(
+        (np.array([1, 2, 3]).reshape(-1, 1),  # x
+         np.array([-1, -2, -3]).reshape(-1, 1))  # y
+    )
 
     param_distributions = {
         "optimizer": [
@@ -66,7 +55,7 @@ if __name__ == "__main__":
     )
 
     rand_search_cv.fit(
-        train_dataset=train_dataset,
+        train_dataset=dataset,
         epochs=1,
         verbose=1
     )

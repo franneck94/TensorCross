@@ -1,11 +1,15 @@
 """Test code for the random search.
 """
+import os
 import unittest
 
 import numpy as np
 import tensorflow as tf
 
 from tensorcross.utils import dataset_split
+
+
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 
 np.random.seed(0)
@@ -15,7 +19,8 @@ tf.random.set_seed(0)
 class UtilsTests(unittest.TestCase):
     def setUp(self) -> None:
         self.dataset = tf.data.Dataset.from_tensor_slices(
-            ([1, 2, 3], [-1, -2, -3])
+            ([1, 2, 3],  #
+             [-1, -2, -3])  # y
         )
 
     def test_train_validation_split(self) -> None:

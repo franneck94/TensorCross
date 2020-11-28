@@ -1,11 +1,15 @@
 """Test code for the grid search cv.
 """
+import os
 import unittest
 
 import numpy as np
 import tensorflow as tf
 
 from tensorcross.model_selection import GridSearchCV
+
+
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 
 np.random.seed(0)
