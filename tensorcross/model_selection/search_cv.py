@@ -1,3 +1,4 @@
+import logging
 from abc import ABCMeta
 from abc import abstractmethod
 from typing import Any
@@ -12,6 +13,9 @@ from sklearn.model_selection import ParameterGrid
 from sklearn.model_selection import ParameterSampler
 
 from tensorcross.utils import dataset_split
+
+
+logger = tf.get_logger()
 
 
 class BaseSearchCV(metaclass=ABCMeta):
@@ -62,6 +66,8 @@ class BaseSearchCV(metaclass=ABCMeta):
                 tf.keras.models.Model or tf.keras.models.Sequential model.
         """
         split_fraction = (1 / self.n_folds)
+        tf_log_level = logger.level
+        logger.setLevel(logging.ERROR)  # Issue 30: Ignore warnings for training
 
         for idx, grid_combination in enumerate(parameter_obj):
             if self.verbose:
@@ -99,6 +105,7 @@ class BaseSearchCV(metaclass=ABCMeta):
             self.results_["val_scores"].append(val_scores)
             self.results_["params"].append(grid_combination)
 
+        logger.setLevel(tf_log_level)  # Issue 30
         mean_val_scores = np.mean(self.results_["val_scores"], axis=0)
         best_run_idx = np.argmax(mean_val_scores)
         self.results_["best_score"] = self.results_["val_scores"][best_run_idx]
