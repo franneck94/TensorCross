@@ -1,3 +1,4 @@
+import os
 from abc import ABCMeta
 from abc import abstractmethod
 from typing import Any
@@ -6,7 +7,6 @@ from typing import Dict
 from typing import Mapping
 from typing import Union
 
-import os
 import numpy as np
 import tensorflow as tf
 from sklearn.model_selection import ParameterGrid
@@ -60,12 +60,17 @@ class BaseSearch(metaclass=ABCMeta):
                 tf.keras.models.Model or tf.keras.models.Sequential model.
         """
 
-        tb_idx = [i for i in range(len(kwargs['callbacks'])) if isinstance(kwargs['callbacks'][i], tf.keras.callbacks.TensorBoard)]
+        tensorboard_callback = None
+        tensorboard_log_dir = ""
 
-        log_dir = None
-        if len(tb_idx) > 0:
-            tb_clb = kwargs['callbacks'][tb_idx[0]]
-            log_dir = tb_clb.log_dir
+        for param, value in kwargs.items():
+            if param == "callbacks":
+                for callback in value:
+                    if isinstance(callback, tf.keras.callbacks.TensorBoard):
+                        tensorboard_callback = callback
+
+        if tensorboard_callback:
+            tensorboard_log_dir = tensorboard_callback.log_dir
 
         for idx, grid_combination in enumerate(parameter_obj):
             if self.verbose:
@@ -75,14 +80,12 @@ class BaseSearch(metaclass=ABCMeta):
                 **self.model_fn_kwargs
             )
 
-            if len(tb_idx) > 0:
-                if not os.path.exists(log_dir):
-                    os.mkdir(log_dir)
-                tb_clb = kwargs['callbacks'][tb_idx[0]]
-                new_log_dir = os.path.join(log_dir, f'{idx}')
+            if tensorboard_callback:
+                if not os.path.exists(tensorboard_log_dir):
+                    os.mkdir(tensorboard_log_dir)
+                new_log_dir = os.path.join(tensorboard_log_dir, f'{idx}')
                 os.mkdir(new_log_dir)
-                tb_clb.log_dir = new_log_dir
-                kwargs['callbacks'][tb_idx[0]] = tb_clb
+                tensorboard_callback.log_dir = new_log_dir
 
             model.fit(
                 train_dataset,
