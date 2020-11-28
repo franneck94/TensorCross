@@ -1,35 +1,13 @@
 import numpy as np
 import tensorflow as tf
 from scipy.stats import uniform
-from sklearn.model_selection import train_test_split
 
 from tensorcross.model_selection import RandomSearch
+from tensorcross.utils import dataset_split
 
 
 np.random.seed(0)
 tf.random.set_seed(0)
-
-
-def f(x: np.ndarray) -> np.ndarray:
-    return 2 * x + 1
-
-
-class DATA:
-    def __init__(
-        self,
-        test_size: float = 0.2
-    ) -> None:
-        x = np.random.uniform(low=-10.0, high=10.0, size=100)
-        y = f(x) + np.random.normal(size=100)
-        x_train, x_val, y_train, y_val = train_test_split(
-            x, y, test_size=test_size
-        )
-        self.train_dataset = tf.data.Dataset.from_tensor_slices(
-            (x_train.reshape(-1, 1), y_train.reshape(-1, 1))
-        )
-        self.val_dataset = tf.data.Dataset.from_tensor_slices(
-            (x_val.reshape(-1, 1), y_val.reshape(-1, 1))
-        )
 
 
 def build_model(
@@ -54,10 +32,15 @@ def build_model(
 
 
 if __name__ == "__main__":
-    data = DATA()
+    dataset = tf.data.Dataset.from_tensor_slices(
+        (np.array([1, 2, 3]).reshape(-1, 1),  # x
+         np.array([-1, -2, -3]).reshape(-1, 1))  # y
+    )
 
-    train_dataset = data.train_dataset
-    val_dataset = data.val_dataset
+    train_dataset, val_dataset = dataset_split(
+        dataset=dataset,
+        split_fraction=(1 / 3)
+    )
 
     param_distributions = {
         "optimizer": [

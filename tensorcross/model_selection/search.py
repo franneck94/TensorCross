@@ -1,3 +1,5 @@
+import logging
+import os
 from abc import ABCMeta
 from abc import abstractmethod
 from typing import Any
@@ -10,6 +12,9 @@ import numpy as np
 import tensorflow as tf
 from sklearn.model_selection import ParameterGrid
 from sklearn.model_selection import ParameterSampler
+
+
+logger = tf.get_logger()
 
 
 class BaseSearch(metaclass=ABCMeta):
@@ -58,6 +63,22 @@ class BaseSearch(metaclass=ABCMeta):
             kwargs (Any): Keyword arguments for the fit method of the
                 tf.keras.models.Model or tf.keras.models.Sequential model.
         """
+
+        tensorboard_callback = None
+        tensorboard_log_dir = ""
+
+        for param, value in kwargs.items():
+            if param == "callbacks":
+                for callback in value:
+                    if isinstance(callback, tf.keras.callbacks.TensorBoard):
+                        tensorboard_callback = callback
+
+        if tensorboard_callback:
+            tensorboard_log_dir = tensorboard_callback.log_dir
+
+        tf_log_level = logger.level
+        logger.setLevel(logging.ERROR)  # Issue 30: Ignore warnings for training
+
         for idx, grid_combination in enumerate(parameter_obj):
             if self.verbose:
                 print(f"Running Comb: {idx}")
@@ -65,6 +86,13 @@ class BaseSearch(metaclass=ABCMeta):
                 **grid_combination,
                 **self.model_fn_kwargs
             )
+
+            if tensorboard_callback:
+                if not os.path.exists(tensorboard_log_dir):
+                    os.mkdir(tensorboard_log_dir)
+                new_log_dir = os.path.join(tensorboard_log_dir, f'model_{idx}')
+                os.mkdir(new_log_dir)
+                tensorboard_callback.log_dir = new_log_dir
 
             model.fit(
                 train_dataset,
@@ -79,6 +107,7 @@ class BaseSearch(metaclass=ABCMeta):
             self.results_["val_scores"].append(val_metric)
             self.results_["params"].append(grid_combination)
 
+        logger.setLevel(tf_log_level)  # Issue 30
         best_run_idx = np.argmax(self.results_["val_scores"])
         self.results_["best_score"] = self.results_["val_scores"][best_run_idx]
         self.results_["best_params"] = self.results_["params"][best_run_idx]
