@@ -1,5 +1,6 @@
 """Test code for the random search.
 """
+import os
 import unittest
 
 import numpy as np
@@ -8,6 +9,9 @@ from scipy.stats import uniform
 from sklearn.model_selection import train_test_split
 
 from tensorcross.model_selection import RandomSearch
+
+
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 
 np.random.seed(0)
