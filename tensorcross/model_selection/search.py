@@ -1,6 +1,4 @@
 import logging
-import os
-
 from abc import ABCMeta
 from abc import abstractmethod
 from typing import Any
@@ -63,7 +61,7 @@ class BaseSearch(metaclass=ABCMeta):
             kwargs (Any): Keyword arguments for the fit method of the
                 tf.keras.models.Model or tf.keras.models.Sequential model.
         """
-
+        
         tensorboard_callback = None
         tensorboard_log_dir = ""
 
