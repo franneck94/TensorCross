@@ -61,6 +61,9 @@ This object will then be trained in e.g. the GridSearch.
 
 ### GridSearch Example
 
+Assuming you have a tf.data.Dataset object and a build_model function,
+defined as above. You can run a GridSearch as below:
+
 ```python
     from tensorcross.model_selection GridSearch
 
@@ -97,8 +100,11 @@ This object will then be trained in e.g. the GridSearch.
 
 ### GridSearchCV Example
 
+Assuming you have a tf.data.Dataset object and a build_model function,
+defined as above. You can run a GridSearchCV as below:
+
 ```python
-    from tensorcross.model_selection GridSearch
+    from tensorcross.model_selection GridSearchCV
 
     param_grid = {
         "optimizer": [
