@@ -80,7 +80,8 @@ class BaseSearchCV(metaclass=ABCMeta):
 
                 train_dataset, val_dataset = dataset_split(
                     dataset=train_dataset,
-                    split_fraction=split_fraction
+                    split_fraction=split_fraction,
+                    fold=fold
                 )
 
                 model.fit(
