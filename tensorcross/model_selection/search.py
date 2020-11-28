@@ -8,6 +8,7 @@ from typing import Mapping
 from typing import Union
 
 import numpy as np
+import logging
 import tensorflow as tf
 from sklearn.model_selection import ParameterGrid
 from sklearn.model_selection import ParameterSampler
