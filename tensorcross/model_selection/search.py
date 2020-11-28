@@ -6,6 +6,7 @@ from typing import Dict
 from typing import Mapping
 from typing import Union
 
+import os
 import numpy as np
 import tensorflow as tf
 from sklearn.model_selection import ParameterGrid
@@ -58,6 +59,14 @@ class BaseSearch(metaclass=ABCMeta):
             kwargs (Any): Keyword arguments for the fit method of the
                 tf.keras.models.Model or tf.keras.models.Sequential model.
         """
+
+        tb_idx = [i for i in range(len(kwargs['callbacks'])) if isinstance(kwargs['callbacks'][i], tf.keras.callbacks.TensorBoard)]
+
+        log_dir = None
+        if len(tb_idx) > 0:
+            tb_clb = kwargs['callbacks'][tb_idx[0]]
+            log_dir = tb_clb.log_dir
+
         for idx, grid_combination in enumerate(parameter_obj):
             if self.verbose:
                 print(f"Running Comb: {idx}")
@@ -65,6 +74,15 @@ class BaseSearch(metaclass=ABCMeta):
                 **grid_combination,
                 **self.model_fn_kwargs
             )
+
+            if len(tb_idx) > 0:
+                if not os.path.exists(log_dir):
+                    os.mkdir(log_dir)
+                tb_clb = kwargs['callbacks'][tb_idx[0]]
+                new_log_dir = os.path.join(log_dir, f'{idx}')
+                os.mkdir(new_log_dir)
+                tb_clb.log_dir = new_log_dir
+                kwargs['callbacks'][tb_idx[0]] = tb_clb
 
             model.fit(
                 train_dataset,
