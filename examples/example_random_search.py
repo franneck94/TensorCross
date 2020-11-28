@@ -76,29 +76,10 @@ if __name__ == "__main__":
         num_targets=1
     )
 
-    callbacks = [
-        tf.keras.callbacks.EarlyStopping(
-            # Stop training when `val_loss` is no longer improving
-            monitor="val_loss",
-            # "no longer improving" being defined as "no better than 1e-2 less"
-            min_delta=1e-2,
-            # "no longer improving" being further defined as "for at least 2 epochs"
-            patience=2,
-            verbose=1,
-        ),
-        tf.keras.callbacks.TensorBoard(
-            log_dir="logs",
-            histogram_freq=0,  # How often to log histogram visualizations
-            embeddings_freq=0,  # How often to log embedding visualizations
-            update_freq="epoch",
-        )
-    ]
-
     rand_search.fit(
         train_dataset=train_dataset,
         val_dataset=val_dataset,
         epochs=3,
-        callbacks=callbacks,
         verbose=1
     )
 

@@ -83,7 +83,7 @@ class BaseSearch(metaclass=ABCMeta):
             if tensorboard_callback:
                 if not os.path.exists(tensorboard_log_dir):
                     os.mkdir(tensorboard_log_dir)
-                new_log_dir = os.path.join(tensorboard_log_dir, f'{idx}')
+                new_log_dir = os.path.join(tensorboard_log_dir, f'model_{idx}')
                 os.mkdir(new_log_dir)
                 tensorboard_callback.log_dir = new_log_dir
 
