@@ -1,4 +1,5 @@
 import logging
+import os
 from abc import ABCMeta
 from abc import abstractmethod
 from typing import Any
@@ -11,6 +12,7 @@ import numpy as np
 import tensorflow as tf
 from sklearn.model_selection import ParameterGrid
 from sklearn.model_selection import ParameterSampler
+
 
 logger = tf.get_logger()
 
@@ -61,7 +63,7 @@ class BaseSearch(metaclass=ABCMeta):
             kwargs (Any): Keyword arguments for the fit method of the
                 tf.keras.models.Model or tf.keras.models.Sequential model.
         """
-        
+
         tensorboard_callback = None
         tensorboard_log_dir = ""
 

@@ -1,4 +1,5 @@
 import logging
+import os
 from abc import ABCMeta
 from abc import abstractmethod
 from typing import Any
@@ -7,8 +8,6 @@ from typing import Dict
 from typing import Mapping
 from typing import Union
 
-import os
-import logging
 import numpy as np
 import tensorflow as tf
 from sklearn.model_selection import ParameterGrid
@@ -80,6 +79,7 @@ class BaseSearchCV(metaclass=ABCMeta):
             tensorboard_log_dir = tensorboard_callback.log_dir
 
         split_fraction = (1 / self.n_folds)
+
         tf_log_level = logger.level
         logger.setLevel(logging.ERROR)  # Issue 30: Ignore warnings for training
 
@@ -107,7 +107,8 @@ class BaseSearchCV(metaclass=ABCMeta):
                 if tensorboard_callback:
                     if not os.path.exists(tensorboard_log_dir):
                         os.mkdir(tensorboard_log_dir)
-                    new_log_dir = os.path.join(tensorboard_log_dir, f'model_{idx}_fold_{fold}')
+                    new_log_dir = os.path.join(
+                        tensorboard_log_dir, f'model_{idx}_fold_{fold}')
                     os.mkdir(new_log_dir)
                     tensorboard_callback.log_dir = new_log_dir
 
@@ -127,6 +128,7 @@ class BaseSearchCV(metaclass=ABCMeta):
             self.results_["params"].append(grid_combination)
 
         logger.setLevel(tf_log_level)  # Issue 30
+
         mean_val_scores = np.mean(self.results_["val_scores"], axis=0)
         best_run_idx = np.argmax(mean_val_scores)
         self.results_["best_score"] = self.results_["val_scores"][best_run_idx]
