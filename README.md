@@ -10,7 +10,7 @@
 pip install tensorcross
 ```
 
-Cross Validation, Grid Search and Random Search for tf.data.Datasets in TensorFlow 2.3 and Python 3.8.
+Cross Validation, Grid Search and Random Search for tf.data.Datasets in TensorFlow 2.0-2.4 and Python 3.8.
 
 ## Motivation
 
@@ -98,6 +98,12 @@ defined as above. You can run a GridSearch as below:
     grid_search.summary()
 ```
 
+This would result in the following console output:
+
+```bash
+    # PLACEHOLDER
+```
+
 ### GridSearchCV Example
 
 Assuming you have a tf.data.Dataset object and a build_model function,
@@ -130,4 +136,10 @@ defined as above. You can run a GridSearchCV as below:
     )
 
     grid_search_cv.summary()
+```
+
+This would result in the following console output:
+
+```bash
+    # PLACEHOLDER
 ```
