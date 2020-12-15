@@ -1,11 +1,11 @@
 # TensorFLow Libraries
-tensorflow==2.4.0
+tensorflow==2.4.*
 tensorflow-datasets
 
 # Libraries
 scikit-learn
 scipy
-numpy==1.19.*
+numpy==1.19.2
 
 # Linting/Tooling
 pylint
