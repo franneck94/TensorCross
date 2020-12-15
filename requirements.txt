@@ -5,14 +5,13 @@ tensorflow-datasets
 # Libraries
 scikit-learn
 scipy
-numpy==1.18.*
+numpy==1.19.*
 
 # Linting/Tooling
 pylint
 flake8
 mypy
 isort
-black
 autopep8
 pre-commit
 

@@ -28,8 +28,9 @@ ISRELEASED = False
 
 PYTHON_VERSION = "3.8"
 INSTALL_REQUIRES = [
-    "tensorflow==2.3.1",
-    "numpy==1.18.*",
+    "tensorflow>=2.0",
+    "numpy",
+    "scipy",
     "scikit-learn"
 ]
 
