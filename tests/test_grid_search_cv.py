@@ -74,7 +74,7 @@ class GridSearchTests(unittest.TestCase):
 
     def test_grid_search_cv(self) -> None:
         self.grid_search_cv.fit(
-            train_dataset=self.train_dataset,
+            dataset=self.train_dataset,
             epochs=1,
             verbose=1
         )

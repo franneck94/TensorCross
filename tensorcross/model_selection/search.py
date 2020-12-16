@@ -5,6 +5,7 @@ from abc import abstractmethod
 from typing import Any
 from typing import Callable
 from typing import Dict
+from typing import Iterable
 from typing import Mapping
 from typing import Union
 
@@ -21,8 +22,8 @@ class BaseSearch(metaclass=ABCMeta):
     """Abstract BaseSearch class for the grid or random search.
 
     Args:
-        model_fn (Callable): Function that builds and compiles a
-            tf.keras.Model or tf.keras.Sequential object.
+        model_fn (Callable[..., tf.keras.models.Model]): Function that
+            builds and compiles a tf.keras.models.Model object.
         verbose (int): Whether to show information in terminal.
             Defaults to 0.
         kwargs (Any): Keyword arguments for the model_fn function.
@@ -30,7 +31,7 @@ class BaseSearch(metaclass=ABCMeta):
     @abstractmethod
     def __init__(
         self,
-        model_fn: Callable,
+        model_fn: Callable[..., tf.keras.models.Model],
         verbose: int = 0,
         **kwargs: Any
     ) -> None:
@@ -100,11 +101,17 @@ class BaseSearch(metaclass=ABCMeta):
                 **kwargs,
             )
 
-            val_metric = model.evaluate(
-                val_dataset,
-                verbose=0
-            )[-1]
-            self.results_["val_scores"].append(val_metric)
+            if len(model.metrics) > 1:
+                val_score = model.evaluate(
+                    val_dataset,
+                    verbose=0
+                )[-1]
+            else:
+                val_score = model.evaluate(
+                    val_dataset,
+                    verbose=0
+                )
+            self.results_["val_scores"].append(val_score)
             self.results_["params"].append(grid_combination)
 
         logger.setLevel(tf_log_level)  # Issue 30
@@ -143,8 +150,8 @@ class BaseSearch(metaclass=ABCMeta):
 class GridSearch(BaseSearch):
     def __init__(
         self,
-        model_fn: Callable,
-        param_grid: Mapping,
+        model_fn: Callable[..., tf.keras.models.Model],
+        param_grid: Mapping[str, Iterable],
         verbose: int = 0,
         **kwargs: Any
     ) -> None:
@@ -161,9 +168,9 @@ class GridSearch(BaseSearch):
         mae score.
 
         Args:
-            model_fn (Callable): Function that builds and compiles a
-                tf.keras.Model or tf.keras.Sequential object.
-            param_grid (Mapping): Dict of str, iterable
+            model_fn (Callable[..., tf.keras.models.Model]): Function that
+                builds and compiles a tf.keras.models.Model object.
+            param_grid (Mapping[str, Iterable]): Dict of str, iterable
                 hyperparameter, where the str is the parameter name of the.
             verbose (int): Whether to show information in terminal.
                 Defaults to 0.
@@ -203,7 +210,7 @@ class GridSearch(BaseSearch):
 class RandomSearch(BaseSearch):
     def __init__(
         self,
-        model_fn: Callable,
+        model_fn: Callable[..., tf.keras.models.Model],
         param_distributions: Dict[str, Callable],
         n_iter: int = 10,
         verbose: int = 0,
@@ -222,8 +229,8 @@ class RandomSearch(BaseSearch):
         mae score.
 
         Args:
-            model_fn (Callable): Function that builds and compiles a
-                tf.keras.Model or tf.keras.Sequential object.
+            model_fn (Callable[..., tf.keras.models.Model]): Function that
+                builds and compiles a tf.keras.models.Model object.
             param_distributions (Dict[str, Callable]): Dict of str, callable
                 pairs, where the str is the parameter name of the.
             n_iter (int): Number of random models. Defaults to 10.

@@ -55,7 +55,7 @@ if __name__ == "__main__":
     )
 
     rand_search_cv.fit(
-        train_dataset=dataset,
+        dataset=dataset,
         epochs=1,
         verbose=1
     )

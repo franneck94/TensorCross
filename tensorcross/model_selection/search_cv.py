@@ -5,6 +5,7 @@ from abc import abstractmethod
 from typing import Any
 from typing import Callable
 from typing import Dict
+from typing import Iterable
 from typing import Mapping
 from typing import Union
 
@@ -24,8 +25,8 @@ class BaseSearchCV(metaclass=ABCMeta):
     with cross validation.
 
     Args:
-        model_fn (Callable): Function that builds and compiles a
-            tf.keras.Model or tf.keras.Sequential object.
+        model_fn (Callable[..., tf.keras.models.Model]): Function that
+            builds and compiles a tf.keras.models.Model object.
         n_folds (int): How many folds. Defaults to 3.
         verbose (int): Whether to show information in terminal.
             Defaults to 0.
@@ -34,7 +35,7 @@ class BaseSearchCV(metaclass=ABCMeta):
     @abstractmethod
     def __init__(
         self,
-        model_fn: Callable,
+        model_fn: Callable[..., tf.keras.models.Model],
         n_folds: int = 3,
         verbose: int = 0,
         **kwargs: Any
@@ -52,15 +53,14 @@ class BaseSearchCV(metaclass=ABCMeta):
 
     def _run_search(
         self,
-        train_dataset: tf.data.Dataset,
+        dataset: tf.data.Dataset,
         parameter_obj: Union[ParameterGrid, ParameterSampler],
         **kwargs: Any
     ) -> None:
         """Runs the exhaustive grid search over the parameter grid.
 
         Args:
-            train_dataset (tf.data.Dataset): tf.data.Dataset object for the
-                training.
+            dataset (tf.data.Dataset): tf.data.Dataset object for the training.
             parameter_obj (ParameterGrid | ParameterSampler): Object to iterate
                 over, to generate hyperparameter combinations.
             kwargs (Any): Keyword arguments for the fit method of the
@@ -99,7 +99,7 @@ class BaseSearchCV(metaclass=ABCMeta):
                 )
 
                 train_dataset, val_dataset = dataset_split(
-                    dataset=train_dataset,
+                    dataset=dataset,
                     split_fraction=split_fraction,
                     fold=fold
                 )
@@ -118,11 +118,17 @@ class BaseSearchCV(metaclass=ABCMeta):
                     **kwargs,
                 )
 
-                val_metric = model.evaluate(
-                    val_dataset,
-                    verbose=0
-                )[-1]
-                val_scores[fold] = val_metric
+                if len(model.metrics) > 1:
+                    val_score = model.evaluate(
+                        val_dataset,
+                        verbose=0
+                    )[-1]
+                else:
+                    val_score = model.evaluate(
+                        val_dataset,
+                        verbose=0
+                    )
+                val_scores[fold] = val_score
 
             self.results_["val_scores"].append(val_scores)
             self.results_["params"].append(grid_combination)
@@ -165,8 +171,8 @@ class BaseSearchCV(metaclass=ABCMeta):
 class GridSearchCV(BaseSearchCV):
     def __init__(
         self,
-        model_fn: Callable,
-        param_grid: Mapping,
+        model_fn: Callable[..., tf.keras.models.Model],
+        param_grid: Mapping[str, Iterable],
         n_folds: int = 3,
         verbose: int = 0,
         **kwargs: Any
@@ -184,9 +190,9 @@ class GridSearchCV(BaseSearchCV):
         mae score.
 
         Args:
-            model_fn (Callable): Function that builds and compiles a
-                tf.keras.Model or tf.keras.Sequential object.
-            param_grid (Mapping): Dict of str, iterable
+            model_fn (Callable[..., tf.keras.models.Model]): Function that
+                builds and compiles a tf.keras.models.Model object.
+            param_grid (Mapping[str, Iterable]): Dict of str, iterable
                 hyperparameter, where the str is the parameter name of the.
             n_folds (int): How many folds. Defaults to 3.
             verbose (int): Whether to show information in terminal.
@@ -203,19 +209,18 @@ class GridSearchCV(BaseSearchCV):
 
     def fit(
         self,
-        train_dataset: tf.data.Dataset,
+        dataset: tf.data.Dataset,
         **kwargs: Any
     ) -> None:
         """Runs the exhaustive grid search over the parameter grid.
 
         Args:
-            train_dataset (tf.data.Dataset): tf.data.Dataset object for the
-                training.
+            dataset (tf.data.Dataset): tf.data.Dataset object for the training.
             kwargs (Any): Keyword arguments for the fit method of the
                 tf.keras.models.Model or tf.keras.models.Sequential model.
         """
         super()._run_search(
-            train_dataset=train_dataset,
+            dataset=dataset,
             parameter_obj=self.param_grid,
             **kwargs
         )
@@ -224,7 +229,7 @@ class GridSearchCV(BaseSearchCV):
 class RandomSearchCV(BaseSearchCV):
     def __init__(
         self,
-        model_fn: Callable,
+        model_fn: Callable[..., tf.keras.models.Model],
         param_distributions: Dict[str, Callable],
         n_iter: int = 10,
         n_folds: int = 3,
@@ -244,8 +249,8 @@ class RandomSearchCV(BaseSearchCV):
         mae score.
 
         Args:
-            model_fn (Callable): Function that builds and compiles a
-                tf.keras.Model or tf.keras.Sequential object.
+            model_fn (Callable[..., tf.keras.models.Model]): Function that
+                builds and compiles a tf.keras.models.Model object.
             param_distributions (Dict[str, Callable]): Dict of str, callable
                 pairs, where the str is the parameter name of the.
             n_iter (int): Number of random models. Defaults to 10.
@@ -269,19 +274,18 @@ class RandomSearchCV(BaseSearchCV):
 
     def fit(
         self,
-        train_dataset: tf.data.Dataset,
+        dataset: tf.data.Dataset,
         **kwargs: Any
     ) -> None:
         """Runs the random search over the parameter distributions.
 
         Args:
-            train_dataset (tf.data.Dataset): tf.data.Dataset object for the
-                training.
+            dataset (tf.data.Dataset): tf.data.Dataset object for the training.
             kwargs (Any): Keyword arguments for the fit method of the
                 tf.keras.models.Model or tf.keras.models.Sequential model.
         """
         super()._run_search(
-            train_dataset=train_dataset,
+            dataset=dataset,
             parameter_obj=self.random_sampler,
             **kwargs
         )

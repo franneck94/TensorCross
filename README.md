@@ -100,8 +100,25 @@ defined as above. You can run a GridSearch as below:
 
 This would result in the following console output:
 
-```bash
-    # PLACEHOLDER
+```console
+    --------------------------------------------------
+    Best score: 1.1800532341003418 using params: {
+        'learning_rate': 0.001, 'optimizer': 'RMSprop'
+    }
+    --------------------------------------------------
+    Idx: 0 - Score: 0.2754371166229248 with param: {
+        'learning_rate': 0.001, 'optimizer': 'Adam'
+    }
+    Idx: 1 - Score: 1.1800532341003418 with param: {
+        'learning_rate': 0.001, 'optimizer': 'RMSprop'
+    }
+    Idx: 2 - Score: 0.055416107177734375 with param: {
+        learning_rate': 0.0001, 'optimizer': 'Adam'
+    }
+    Idx: 3 - Score: 0.12417340278625488 with param: {
+        'learning_rate': 0.0001, 'optimizer': 'RMSprop'
+    }
+    --------------------------------------------------
 ```
 
 ### GridSearchCV Example
@@ -130,7 +147,7 @@ defined as above. You can run a GridSearchCV as below:
     )
 
     grid_search_cv.fit(
-        train_dataset=dataset,
+        dataset=dataset,
         epochs=1,
         verbose=1
     )
@@ -140,6 +157,23 @@ defined as above. You can run a GridSearchCV as below:
 
 This would result in the following console output:
 
-```bash
-    # PLACEHOLDER
+```console
+    --------------------------------------------------
+    Best score: 1.1800532341003418 using params: {
+        'learning_rate': 0.001, 'optimizer': 'RMSprop'
+    }
+    --------------------------------------------------
+    Idx: 0 - Score: 0.2754371166229248 with param: {
+        'learning_rate': 0.001, 'optimizer': 'Adam'
+    }
+    Idx: 1 - Score: 1.1800532341003418 with param: {
+        'learning_rate': 0.001, 'optimizer': 'RMSprop'
+    }
+    Idx: 2 - Score: 0.055416107177734375 with param: {
+        learning_rate': 0.0001, 'optimizer': 'Adam'
+    }
+    Idx: 3 - Score: 0.12417340278625488 with param: {
+        'learning_rate': 0.0001, 'optimizer': 'RMSprop'
+    }
+    --------------------------------------------------
 ```

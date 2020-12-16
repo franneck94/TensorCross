@@ -76,7 +76,7 @@ class RandomSearchTests(unittest.TestCase):
 
     def test_random_search_cv(self) -> None:
         self.rand_search_cv.fit(
-            train_dataset=self.train_dataset,
+            dataset=self.train_dataset,
             epochs=1,
             verbose=1
         )

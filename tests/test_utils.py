@@ -1,15 +1,11 @@
 """Test code for the random search.
 """
-import os
 import unittest
 
 import numpy as np
 import tensorflow as tf
 
 from tensorcross.utils import dataset_split
-
-
-os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
 
 np.random.seed(0)
