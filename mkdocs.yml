@@ -1,0 +1,20 @@
+# mkdocs.yml
+site_name: TensorCross
+
+theme:
+  name: "material"
+  palette:
+    primary: "orange"
+    accent: "grey"
+
+plugins:
+  - search
+  - mkdocstrings
+
+markdown_extensions:
+  - pymdownx.highlight
+  - pymdownx.superfences
+
+nav:
+  - "Start": index.md
+  - "API": api.md

@@ -145,7 +145,8 @@ class BaseSearchCV(metaclass=ABCMeta):
 
         Assuming the *RandomSearch* had n iterations or the
         *GridSearch* had n combinations in total, the output
-        would have the following structure::
+        would have the following structure:
+        ```
             --------------------------------------------------
             Best score: ``float`` using params: ``dict``
             --------------------------------------------------
@@ -153,6 +154,7 @@ class BaseSearchCV(metaclass=ABCMeta):
             ...
             Idx: n-1 - Score: ``float`` using params: ``dict``
             --------------------------------------------------
+        ```
         """
         best_params_str = (f"Best score: {self.results_['best_score']} "
                            f"using params: {self.results_['best_params']}")
@@ -180,11 +182,11 @@ class GridSearchCV(BaseSearchCV):
         """GridSearch for a given parameter grid.
 
         The grid search is evaluated by the either the validation loss value,
-        if no metrics are passed to the compile function, otherweise the
+        if no metrics are passed to the compile function, or the
         validation score of the last defined metric is used.
-        .. code-block:: python
-
+        ``` python
             model.compile(loss="mse", metrics=["mse", "mae"])
+        ```
 
         This would sort the grid search combinations based on the validation
         mae score.
@@ -239,11 +241,11 @@ class RandomSearchCV(BaseSearchCV):
         """RandomSearch for a given parameter distribution.
 
         The random search is evaluated by the either the validation loss value,
-        if no metrics are passed to the compile function, otherweise the
+        if no metrics are passed to the compile function, or the
         validation score of the last defined metric is used.
-        .. code-block:: python
-
+        ``` python
             model.compile(loss="mse", metrics=["mse", "mae"])
+        ```
 
         This would sort the random search combinations based on the validation
         mae score.

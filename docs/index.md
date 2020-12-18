@@ -30,7 +30,7 @@ This python package aims to help with this use-case.
 
 ### Dataset and TensorFlow Model for the Examples
 
-``` python
+```python
     import tensorflow as tf
 
     dataset = tf.data.Dataset.from_tensor_slices(
@@ -64,7 +64,7 @@ This object will then be trained in e.g. the GridSearch.
 Assuming you have a tf.data.Dataset object and a build_model function,
 defined as above. You can run a GridSearch as below:
 
-``` python
+```python
     from tensorcross.model_selection GridSearch
 
     train_dataset, val_dataset = dataset_split(
