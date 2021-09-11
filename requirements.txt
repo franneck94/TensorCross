@@ -1,11 +1,11 @@
 # TensorFLow Libraries
-tensorflow==2.4.*
+tensorflow>=2.0
 tensorflow-datasets
 
 # Libraries
 scikit-learn
 scipy
-numpy==1.19.2
+numpy
 
 # Docs
 mkdocs

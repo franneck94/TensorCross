@@ -6,7 +6,7 @@ from setuptools import setup
 
 CLASSIFIERS = """\
 License :: OSI Approved
-Programming Language :: Python :: 3.8
+Programming Language :: Python :: 3.7 :: 3.8 :: 3.9
 Topic :: Software Development
 Operating System :: Microsoft :: Windows
 Operating System :: POSIX
@@ -26,7 +26,7 @@ README = ("Cross Validation, Grid Search and Random Search for TensorFlow "
 VERSION = __version__
 ISRELEASED = False
 
-PYTHON_VERSION = "3.8"
+MIN_PYTHON_VERSION = "3.7"
 INSTALL_REQUIRES = [
     "tensorflow>=2.0",
     "numpy",
@@ -42,7 +42,7 @@ metadata = dict(
     long_description=README,
     packages=PACKAGES,
     author=AUTHORS,
-    python_requires=f"=={PYTHON_VERSION}",
+    python_requires=f">={MIN_PYTHON_VERSION}",
     install_requires=INSTALL_REQUIRES,
     description=DESCRIPTION,
     classifiers=[CLASSIFIERS],
