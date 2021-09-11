@@ -2,6 +2,7 @@
 *.txt
 *.isorted
 !requirements.txt
+!requirements-dev.txt
 build/
 !docs/build/
 .benchmarks/

@@ -6,25 +6,3 @@ tensorflow-datasets
 scikit-learn
 scipy
 numpy
-
-# Docs
-mkdocs
-mkdocstrings
-pygments
-
-# Linting/Tooling
-pylint
-flake8
-mypy
-isort
-autopep8
-pre-commit
-
-# Testing
-pytest
-codecov
-pytest-cov
-tox
-
-# Packaging
-twine

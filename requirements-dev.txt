@@ -1,0 +1,22 @@
+# Packaging
+setuptools
+wheel
+twine
+
+# Docs
+mkdocs
+mkdocstrings
+pygments
+
+# Linting/Tooling
+flake8
+mypy
+isort
+black
+pre-commit
+
+# Testing
+pytest
+codecov
+pytest-cov
+tox

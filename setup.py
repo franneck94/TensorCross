@@ -6,7 +6,9 @@ from setuptools import setup
 
 CLASSIFIERS = """\
 License :: OSI Approved
-Programming Language :: Python :: 3.7 :: 3.8 :: 3.9
+Programming Language :: Python :: 3.7
+Programming Language :: Python :: 3.8
+Programming Language :: Python :: 3.9
 Topic :: Software Development
 Operating System :: Microsoft :: Windows
 Operating System :: POSIX
@@ -16,23 +18,23 @@ Operating System :: MacOS
 
 DISTNAME = "tensorcross"
 AUTHORS = "Jan Schaffranek, Saif Al-Dilaimi"
-DESCRIPTION = ("Cross Validation, Grid Search and Random Search "
-               "for TensorFlow Datasets.")
+DESCRIPTION = (
+    "Cross Validation, Grid Search and Random Search "
+    "for TensorFlow Datasets."
+)
 LICENSE = "MIT"
-README = ("Cross Validation, Grid Search and Random Search for TensorFlow "
-          "Datasets. For more information see here: "
-          "https://github.com/franneck94/TensorCross")
+README = (
+    "Cross Validation, Grid Search and Random Search for TensorFlow "
+    "Datasets. For more information see here: "
+    "https://github.com/franneck94/TensorCross"
+)
 
 VERSION = __version__
 ISRELEASED = False
 
 MIN_PYTHON_VERSION = "3.7"
-INSTALL_REQUIRES = [
-    "tensorflow>=2.0",
-    "numpy",
-    "scipy",
-    "scikit-learn"
-]
+MAX_PYTHON_VERSION = "3.9"
+INSTALL_REQUIRES = ["tensorflow>=2.0", "numpy", "scipy", "scikit-learn"]
 
 PACKAGES = find_packages(include=["tensorcross", "tensorcross.*"])
 
@@ -42,11 +44,11 @@ metadata = dict(
     long_description=README,
     packages=PACKAGES,
     author=AUTHORS,
-    python_requires=f">={MIN_PYTHON_VERSION}",
+    python_requires=f">={MIN_PYTHON_VERSION},<={MAX_PYTHON_VERSION}",
     install_requires=INSTALL_REQUIRES,
     description=DESCRIPTION,
     classifiers=[CLASSIFIERS],
-    license=LICENSE
+    license=LICENSE,
 )
 
 
