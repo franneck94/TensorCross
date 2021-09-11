@@ -28,12 +28,13 @@ class BaseSearch(metaclass=ABCMeta):
             Defaults to 0.
         kwargs (Any): Keyword arguments for the model_fn function.
     """
+
     @abstractmethod
     def __init__(
         self,
         model_fn: Callable[..., tf.keras.models.Model],
         verbose: int = 0,
-        **kwargs: Any
+        **kwargs: Any,
     ) -> None:
         self.model_fn = model_fn
         self.verbose = verbose
@@ -50,7 +51,7 @@ class BaseSearch(metaclass=ABCMeta):
         train_dataset: tf.data.Dataset,
         val_dataset: tf.data.Dataset,
         parameter_obj: Union[ParameterGrid, ParameterSampler],
-        **kwargs: Any
+        **kwargs: Any,
     ) -> None:
         """Runs the exhaustive grid search over the parameter grid.
 
@@ -83,10 +84,7 @@ class BaseSearch(metaclass=ABCMeta):
         for idx, grid_combination in enumerate(parameter_obj):
             if self.verbose:
                 print(f"Running Comb: {idx}")
-            model = self.model_fn(
-                **grid_combination,
-                **self.model_fn_kwargs
-            )
+            model = self.model_fn(**grid_combination, **self.model_fn_kwargs)
 
             if tensorboard_callback:
                 if not os.path.exists(tensorboard_log_dir):
@@ -95,22 +93,12 @@ class BaseSearch(metaclass=ABCMeta):
                 os.mkdir(new_log_dir)
                 tensorboard_callback.log_dir = new_log_dir
 
-            model.fit(
-                train_dataset,
-                validation_data=val_dataset,
-                **kwargs,
-            )
+            model.fit(train_dataset, validation_data=val_dataset, **kwargs)
 
             if len(model.metrics) > 1:
-                val_score = model.evaluate(
-                    val_dataset,
-                    verbose=0
-                )[-1]
+                val_score = model.evaluate(val_dataset, verbose=0)[-1]
             else:
-                val_score = model.evaluate(
-                    val_dataset,
-                    verbose=0
-                )
+                val_score = model.evaluate(val_dataset, verbose=0)
             self.results_["val_scores"].append(val_score)
             self.results_["params"].append(grid_combination)
 
@@ -119,7 +107,7 @@ class BaseSearch(metaclass=ABCMeta):
         self.results_["best_score"] = self.results_["val_scores"][best_run_idx]
         self.results_["best_params"] = self.results_["params"][best_run_idx]
 
-    def summary(self) -> None:
+    def summary(self) -> str:
         """Prints the summary of the search to the console.
 
         Assuming the *RandomSearch* had n iterations or the
@@ -134,19 +122,33 @@ class BaseSearch(metaclass=ABCMeta):
             Idx: n-1 - Score: ``float`` using params: ``dict``
             --------------------------------------------------
         ```
+
+        Returns:
+            Full string of the summary that was printed.
         """
-        best_params_str = (f"Best score: {self.results_['best_score']} "
-                           f"using params: {self.results_['best_params']}")
+        best_params_str = (
+            f"Best score: {self.results_['best_score']} "
+            f"using params: {self.results_['best_params']}"
+        )
         dashed_line = "".join(map(lambda x: "-", best_params_str))
-        print(f"\n{dashed_line}\n{best_params_str}\n{dashed_line}")
+
+        current_line = f"\n{dashed_line}\n{best_params_str}\n{dashed_line}"
+        results_str = current_line
+        print(current_line)
 
         scores = self.results_["val_scores"]
         params = self.results_["params"]
 
         for idx, (score, param) in enumerate(zip(scores, params)):
-            print(f"Idx: {idx} - Score: {score} with param: {param}")
+            current_line = f"Idx: {idx} - Score: {score} with param: {param}"
+            results_str += current_line
+            print(current_line)
 
-        print(f"{dashed_line}\n")
+        current_line = f"{dashed_line}\n"
+        results_str += current_line
+        print(current_line)
+
+        return results_str
 
 
 class GridSearch(BaseSearch):
@@ -155,13 +157,29 @@ class GridSearch(BaseSearch):
         model_fn: Callable[..., tf.keras.models.Model],
         param_grid: Mapping[str, Iterable],
         verbose: int = 0,
-        **kwargs: Any
+        **kwargs: Any,
     ) -> None:
         """GridSearch for a given parameter grid.
 
-        The grid search is evaluated by the either the validation loss value,
-        if no metrics are passed to the compile function, or the
-        validation score of the last defined metric is used.
+        The grid search iterates over all combinations of the param_grid
+        dictionary, which defines the hyperparameter values for a key that
+        is a parameter name of the model_fn.
+        For example, if the model_fn has the parameter "num_units" a dictionary
+        could look like this:
+
+        ``` python
+            def model_fn(num_units: int):
+                pass
+
+            param_distributions = {"num_units": [10, 20 ,30]}
+        ```
+
+        Note: Inside the model_fn it is expected that the model is compiled.
+
+        The grid search is evaluated by:
+        - The validation loss value, if no metrics are passed to model.compile()
+        - The validation score of the last defined metric in model.compile()
+
         ``` python
             model.compile(loss="mse", metrics=["mse", "mae"])
         ```
@@ -178,18 +196,14 @@ class GridSearch(BaseSearch):
                 Defaults to 0.
             kwargs (Any): Keyword arguments for the model_fn function.
         """
-        super().__init__(
-            model_fn=model_fn,
-            verbose=verbose,
-            **kwargs
-        )
+        super().__init__(model_fn=model_fn, verbose=verbose, **kwargs)
         self.param_grid = ParameterGrid(param_grid)
 
     def fit(
         self,
         train_dataset: tf.data.Dataset,
         val_dataset: tf.data.Dataset,
-        **kwargs: Any
+        **kwargs: Any,
     ) -> None:
         """Runs the exhaustive grid search over the parameter grid.
 
@@ -205,7 +219,7 @@ class GridSearch(BaseSearch):
             train_dataset=train_dataset,
             val_dataset=val_dataset,
             parameter_obj=self.param_grid,
-            **kwargs
+            **kwargs,
         )
 
 
@@ -216,18 +230,34 @@ class RandomSearch(BaseSearch):
         param_distributions: Dict[str, Callable],
         n_iter: int = 10,
         verbose: int = 0,
-        **kwargs: Any
+        **kwargs: Any,
     ) -> None:
         """RandomSearch for a given parameter distribution.
 
-        The random search is evaluated by the either the validation loss value,
-        if no metrics are passed to the compile function, or the
-        validation score of the last defined metric is used.
+        The random search randomly iterates over the param_distributions
+        dictionary, which defines the hyperparameter value range for a key that
+        is a parameter name of the model_fn.
+        For example, if the model_fn has the parameter "num_units" a dictionary
+        could look like this:
+
+        ``` python
+            def model_fn(num_units: int):
+                pass
+
+            param_distributions = {"num_units": [10, 20 ,30]}
+        ```
+
+        Note: Inside the model_fn it is expected that the model is compiled.
+
+        The random search is evaluated by:
+        - The validation loss value, if no metrics are passed to model.compile()
+        - The validation score of the last defined metric in model.compile()
+
         ``` python
             model.compile(loss="mse", metrics=["mse", "mae"])
         ```
 
-        This would sort the random search combinations based on the validation
+        This would sort the grid search combinations based on the validation
         mae score.
 
         Args:
@@ -236,27 +266,22 @@ class RandomSearch(BaseSearch):
             param_distributions (Dict[str, Callable]): Dict of str, callable
                 pairs, where the str is the parameter name of the.
             n_iter (int): Number of random models. Defaults to 10.
-            verbose (int): Whether to show information in terminal.
+            verbose (int): Whether to show information in the terminal.
                 Defaults to 0.
             kwargs (Any): Keyword arguments for the model_fn function.
         """
-        super().__init__(
-            model_fn=model_fn,
-            verbose=verbose,
-            **kwargs
-        )
+        super().__init__(model_fn=model_fn, verbose=verbose, **kwargs)
         self.param_distributions = param_distributions
         self.n_iter = n_iter
         self.random_sampler = ParameterSampler(
-            self.param_distributions,
-            n_iter=self.n_iter
+            self.param_distributions, n_iter=self.n_iter
         )
 
     def fit(
         self,
         train_dataset: tf.data.Dataset,
         val_dataset: tf.data.Dataset,
-        **kwargs: Any
+        **kwargs: Any,
     ) -> None:
         """Runs the random search over the parameter distributions.
 
@@ -272,5 +297,5 @@ class RandomSearch(BaseSearch):
             train_dataset=train_dataset,
             val_dataset=val_dataset,
             parameter_obj=self.random_sampler,
-            **kwargs
+            **kwargs,
         )

@@ -24,9 +24,7 @@ def f(x: np.ndarray) -> np.ndarray:
 
 class DATA:
     def __init__(
-        self,
-        test_size: float = 0.2,
-        validation_size: float = 0.33
+        self, test_size: float = 0.2, validation_size: float = 0.33
     ) -> None:
         x = np.random.uniform(low=-10.0, high=10.0, size=100)
         y = f(x) + np.random.normal(size=100)
@@ -45,19 +43,16 @@ def build_model(
     num_features: int,
     num_targets: int,
     optimizer: tf.keras.optimizers.Optimizer,
-    learning_rate: float
+    learning_rate: float,
 ) -> tf.keras.models.Model:
-    """Build the test model.
-    """
+    """Build the test model."""
     x_input = tf.keras.layers.Input(shape=num_features)
     y_pred = tf.keras.layers.Dense(units=num_targets)(x_input)
     model = tf.keras.models.Model(inputs=[x_input], outputs=[y_pred])
 
     opt = optimizer(learning_rate=learning_rate)
 
-    model.compile(
-        loss="mse", optimizer=opt, metrics=["mse"]
-    )
+    model.compile(loss="mse", optimizer=opt, metrics=["mse"])
 
     return model
 
@@ -71,9 +66,9 @@ class RandomSearchTests(unittest.TestCase):
         param_distributions = {
             "optimizer": [
                 tf.keras.optimizers.Adam,
-                tf.keras.optimizers.RMSprop
+                tf.keras.optimizers.RMSprop,
             ],
-            "learning_rate": uniform(0.001, 0.0001)
+            "learning_rate": uniform(0.001, 0.0001),
         }
 
         self.rand_search = RandomSearch(
@@ -82,7 +77,7 @@ class RandomSearchTests(unittest.TestCase):
             n_iter=2,
             verbose=1,
             num_features=1,
-            num_targets=1
+            num_targets=1,
         )
 
     def test_random_search(self) -> None:
@@ -90,7 +85,7 @@ class RandomSearchTests(unittest.TestCase):
             train_dataset=self.train_dataset,
             val_dataset=self.val_dataset,
             epochs=1,
-            verbose=1
+            verbose=1,
         )
 
         self.rand_search.summary()

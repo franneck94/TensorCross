@@ -12,5 +12,5 @@ __all__ = [
     "RandomSearch",
     "BaseSearchCV",
     "GridSearchCV",
-    "RandomSearchCV"
+    "RandomSearchCV",
 ]

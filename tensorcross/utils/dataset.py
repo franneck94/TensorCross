@@ -4,9 +4,7 @@ import tensorflow as tf
 
 
 def dataset_split(
-    dataset: tf.data.Dataset,
-    split_fraction: float,
-    fold: int = 0
+    dataset: tf.data.Dataset, split_fraction: float, fold: int = 0
 ) -> Tuple[tf.data.Dataset, tf.data.Dataset]:
     """Splits the dataset into one chunk with split_fraction many elements of
     the original dataset and another chunk with size (1 - split_fraction)
@@ -30,8 +28,7 @@ def dataset_split(
 
 
 def dataset_join(
-    dataset_left: tf.data.Dataset,
-    dataset_right: tf.data.Dataset
+    dataset_left: tf.data.Dataset, dataset_right: tf.data.Dataset
 ) -> tf.data.Dataset:
     dataset_joined = dataset_left.concatenate(dataset_right)
     return dataset_joined

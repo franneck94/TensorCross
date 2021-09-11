@@ -22,10 +22,7 @@ def f(x: np.ndarray) -> np.ndarray:
 
 
 class DATA:
-    def __init__(
-        self,
-        test_size: float = 0.2
-    ) -> None:
+    def __init__(self, test_size: float = 0.2) -> None:
         x = np.random.uniform(low=-10.0, high=10.0, size=100)
         y = f(x) + np.random.normal(size=100)
         x_train, x_val, y_train, y_val = train_test_split(
@@ -43,19 +40,16 @@ def build_model(
     num_features: int,
     num_targets: int,
     optimizer: tf.keras.optimizers.Optimizer,
-    learning_rate: float
+    learning_rate: float,
 ) -> tf.keras.models.Model:
-    """Build the test model.
-    """
+    """Build the test model."""
     x_input = tf.keras.layers.Input(shape=num_features)
     y_pred = tf.keras.layers.Dense(units=num_targets)(x_input)
     model = tf.keras.models.Model(inputs=[x_input], outputs=[y_pred])
 
     opt = optimizer(learning_rate=learning_rate)
 
-    model.compile(
-        loss="mse", optimizer=opt, metrics=["mse"]
-    )
+    model.compile(loss="mse", optimizer=opt, metrics=["mse"])
 
     return model
 
@@ -69,9 +63,9 @@ class GridSearchTests(unittest.TestCase):
         self.param_grid = {
             "optimizer": [
                 tf.keras.optimizers.Adam,
-                tf.keras.optimizers.RMSprop
+                tf.keras.optimizers.RMSprop,
             ],
-            "learning_rate": [0.001, 0.0001]
+            "learning_rate": [0.001, 0.0001],
         }
 
         self.grid_search = GridSearch(
@@ -79,7 +73,7 @@ class GridSearchTests(unittest.TestCase):
             param_grid=self.param_grid,
             verbose=1,
             num_features=1,
-            num_targets=1
+            num_targets=1,
         )
 
     def test_grid_search(self) -> None:
@@ -87,7 +81,7 @@ class GridSearchTests(unittest.TestCase):
             train_dataset=self.train_dataset,
             val_dataset=self.val_dataset,
             epochs=1,
-            verbose=1
+            verbose=1,
         )
 
         self.grid_search.summary()
