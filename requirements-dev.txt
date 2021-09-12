@@ -9,11 +9,13 @@ mkdocstrings
 pygments
 
 # Linting/Tooling
+pylint
 flake8
 mypy
 isort
-black
+black==21.4b0
 pre-commit
+autopep8
 
 # Testing
 pytest
