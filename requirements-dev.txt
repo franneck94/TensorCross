@@ -11,7 +11,10 @@ pygments
 # Linting/Tooling
 pylint
 flake8
+flake8-bugbear
+flake8-pytest-style
 mypy
+pydantic
 isort
 black==21.4b0
 pre-commit
