@@ -75,5 +75,5 @@ class GridSearchTests(unittest.TestCase):
         self.grid_search_cv.summary()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

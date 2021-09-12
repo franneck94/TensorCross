@@ -106,7 +106,7 @@ class BaseSearchCV(metaclass=ABCMeta):
                     if not os.path.exists(tensorboard_log_dir):
                         os.mkdir(tensorboard_log_dir)
                     new_log_dir = os.path.join(
-                        tensorboard_log_dir, f'model_{idx}_fold_{fold}'
+                        tensorboard_log_dir, f"model_{idx}_fold_{fold}"
                     )
                     os.mkdir(new_log_dir)
                     tensorboard_callback.log_dir = new_log_dir

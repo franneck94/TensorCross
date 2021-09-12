@@ -91,5 +91,5 @@ class RandomSearchTests(unittest.TestCase):
         self.rand_search.summary()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
