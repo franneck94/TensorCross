@@ -12,7 +12,6 @@ pygments
 pylint
 flake8
 flake8-bugbear
-flake8-pytest-style
 mypy
 pydantic
 isort
