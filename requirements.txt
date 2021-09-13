@@ -1,6 +1,5 @@
 # TensorFLow Libraries
 tensorflow>=2.0
-tensorflow-datasets
 
 # Libraries
 scikit-learn
