@@ -5,6 +5,7 @@ twine
 
 # Docs
 mkdocs
+mkdocs-material
 mkdocstrings
 pygments
 
@@ -12,7 +13,9 @@ pygments
 pylint
 flake8
 flake8-bugbear
+flake8-comprehensions
 mypy
+mypy-extensions
 pydantic
 isort
 black==21.4b0
