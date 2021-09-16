@@ -1,6 +1,10 @@
 name: "CodeQL"
 
 on:
+  push:
+    branches: [ main, dev ]
+  pull_request:
+    branches: [ main, dev ]
   schedule:
     - cron: '20 7 * * 4'
 
@@ -12,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: [ 'python' ]
+        language: [ 'javascript' ]
 
     steps:
     - name: Checkout repository
