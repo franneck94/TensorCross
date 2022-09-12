@@ -27,8 +27,8 @@ class BaseSearchCV(metaclass=ABCMeta):
     with cross validation.
 
     Args:
-        model_fn (Callable[..., tf.keras.models.Model]): Function that
-            builds and compiles a tf.keras.models.Model object.
+        model_fn (Callable[..., Model]): Function that
+            builds and compiles a Model object.
         n_folds (int): How many folds. Defaults to 3.
         verbose (int): Whether to show information in terminal.
             Defaults to 0.
@@ -67,7 +67,7 @@ class BaseSearchCV(metaclass=ABCMeta):
             parameter_obj (ParameterGrid | ParameterSampler): Object to iterate
                 over, to generate hyperparameter combinations.
             kwargs (Any): Keyword arguments for the fit method of the
-                tf.keras.models.Model or tf.keras.models.Sequential model.
+                Model or tf.keras.models.Sequential model.
         """
         maximize = True
         tensorboard_callback = None
@@ -218,8 +218,8 @@ class GridSearchCV(BaseSearchCV):
         mae score.
 
         Args:
-            model_fn (Callable[..., tf.keras.models.Model]): Function that
-                builds and compiles a tf.keras.models.Model object.
+            model_fn (Callable[..., Model]): Function that
+                builds and compiles a Model object.
             param_grid (Mapping[str, Iterable]): Dict of str, iterable
             hyperparameter, where the str is the parameter name of the.
             n_folds (int): How many folds. Defaults to 3.
@@ -238,7 +238,7 @@ class GridSearchCV(BaseSearchCV):
         Args:
             dataset (tf.data.Dataset): tf.data.Dataset object for the training.
             kwargs (Any): Keyword arguments for the fit method of the
-                tf.keras.models.Model or tf.keras.models.Sequential model.
+                Model or tf.keras.models.Sequential model.
         """
         super()._run_search(
             dataset=dataset, parameter_obj=self.param_grid, **kwargs
@@ -284,8 +284,8 @@ class RandomSearchCV(BaseSearchCV):
         mae score.
 
         Args:
-            model_fn (Callable[..., tf.keras.models.Model]): Function that
-                builds and compiles a tf.keras.models.Model object.
+            model_fn (Callable[..., Model]): Function that
+                builds and compiles a Model object.
             param_distributions (Dict[str, Callable]): Dict of str, callable
                 pairs, where the str is the parameter name of the.
             n_iter (int): Number of random models. Defaults to 10.
@@ -309,7 +309,7 @@ class RandomSearchCV(BaseSearchCV):
         Args:
             dataset (tf.data.Dataset): tf.data.Dataset object for the training.
             kwargs (Any): Keyword arguments for the fit method of the
-                tf.keras.models.Model or tf.keras.models.Sequential model.
+                Model or tf.keras.models.Sequential model.
         """
         super()._run_search(
             dataset=dataset, parameter_obj=self.random_sampler, **kwargs
