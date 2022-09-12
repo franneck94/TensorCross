@@ -11,17 +11,12 @@ mkdocstrings
 pygments
 
 # Linting/Tooling
-pylint
-flake8
-flake8-bugbear
-flake8-comprehensions
-mypy
+flake8>=5.0.4
+mypy>=0.971
 mypy-extensions
-pydantic
-isort
-black==22.8.0
-pre-commit
-autopep8
+isort>=5.10.1
+black>=22.8.0
+pre-commit>= 2.20.0
 
 # Testing
 pytest
