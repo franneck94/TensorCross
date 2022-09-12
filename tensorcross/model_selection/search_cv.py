@@ -14,6 +14,7 @@ import tensorflow as tf
 from sklearn.model_selection import ParameterGrid
 from sklearn.model_selection import ParameterSampler
 
+from tensorcross._types import ResultsDict
 from tensorcross.utils import dataset_split
 
 
@@ -45,7 +46,7 @@ class BaseSearchCV(metaclass=ABCMeta):
         self.verbose = verbose
         self.n_folds = n_folds
         self.model_fn_kwargs = kwargs
-        self.results_ = {
+        self.results_: ResultsDict = {
             "best_score": -np.inf,
             "best_params": {},
             "val_scores": [],

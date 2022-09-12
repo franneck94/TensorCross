@@ -10,7 +10,7 @@
 pip install tensorcross
 ```
 
-Cross Validation, Grid Search and Random Search for tf.data.Datasets in TensorFlow 2.0-2.4 and Python 3.8.
+Cross Validation, Grid Search and Random Search for tf.data.Datasets in TensorFlow 2.0+ and Python 3.7+.
 
 ## Motivation
 

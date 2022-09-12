@@ -14,6 +14,8 @@ import tensorflow as tf
 from sklearn.model_selection import ParameterGrid
 from sklearn.model_selection import ParameterSampler
 
+from tensorcross._types import ResultsDict
+
 
 logger = tf.get_logger()
 
@@ -39,7 +41,7 @@ class BaseSearch(metaclass=ABCMeta):
         self.model_fn = model_fn
         self.verbose = verbose
         self.model_fn_kwargs = kwargs
-        self.results_ = {
+        self.results_: ResultsDict = {
             "best_score": -np.inf,
             "best_params": {},
             "val_scores": [],

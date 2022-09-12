@@ -19,7 +19,7 @@ mypy
 mypy-extensions
 pydantic
 isort
-black==21.4b0
+black==22.8.0
 pre-commit
 autopep8
 
