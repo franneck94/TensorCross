@@ -13,6 +13,7 @@ import numpy as np
 import tensorflow as tf
 from sklearn.model_selection import ParameterGrid
 from sklearn.model_selection import ParameterSampler
+from tensorflow.keras.models import Model
 
 from tensorcross._types import ResultsDict
 
@@ -34,7 +35,7 @@ class BaseSearch(metaclass=ABCMeta):
     @abstractmethod
     def __init__(
         self,
-        model_fn: Callable[..., tf.keras.models.Model],
+        model_fn: Callable[..., Model],
         verbose: int = 0,
         **kwargs: Any,
     ) -> None:
@@ -156,7 +157,7 @@ class BaseSearch(metaclass=ABCMeta):
 class GridSearch(BaseSearch):
     def __init__(
         self,
-        model_fn: Callable[..., tf.keras.models.Model],
+        model_fn: Callable[..., Model],
         param_grid: Mapping[str, Iterable],
         verbose: int = 0,
         **kwargs: Any,
@@ -228,7 +229,7 @@ class GridSearch(BaseSearch):
 class RandomSearch(BaseSearch):
     def __init__(
         self,
-        model_fn: Callable[..., tf.keras.models.Model],
+        model_fn: Callable[..., Model],
         param_distributions: Dict[str, Callable],
         n_iter: int = 10,
         verbose: int = 0,

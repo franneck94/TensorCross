@@ -1,5 +1,11 @@
 import numpy as np
 import tensorflow as tf
+from tensorflow.keras.layers import Dense
+from tensorflow.keras.layers import Input
+from tensorflow.keras.models import Model
+from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.optimizers import Optimizer
+from tensorflow.keras.optimizers import RMSprop
 
 from tensorcross.model_selection import GridSearch
 from tensorcross.utils import dataset_split
@@ -12,13 +18,13 @@ tf.random.set_seed(0)
 def build_model(
     num_features: int,
     num_targets: int,
-    optimizer: tf.keras.optimizers.Optimizer,
+    optimizer: Optimizer,
     learning_rate: float,
-) -> tf.keras.models.Model:
+) -> Model:
     """Build the test model."""
-    x_input = tf.keras.layers.Input(shape=num_features)
-    y_pred = tf.keras.layers.Dense(units=num_targets)(x_input)
-    model = tf.keras.models.Model(inputs=[x_input], outputs=[y_pred])
+    x_input = Input(shape=num_features)
+    y_pred = Dense(units=num_targets)(x_input)
+    model = Model(inputs=[x_input], outputs=[y_pred])
 
     opt = optimizer(learning_rate=learning_rate)
 
@@ -30,9 +36,9 @@ def build_model(
 if __name__ == "__main__":
     dataset = tf.data.Dataset.from_tensor_slices(
         (
-            np.array([1, 2, 3]).reshape(-1, 1),  # x
+            np.array([1, 2, 3]).reshape(-1, 1),
             np.array([-1, -2, -3]).reshape(-1, 1),
-        )  # y
+        )
     )
 
     train_dataset, val_dataset = dataset_split(
@@ -40,7 +46,7 @@ if __name__ == "__main__":
     )
 
     param_grid = {
-        "optimizer": [tf.keras.optimizers.Adam, tf.keras.optimizers.RMSprop],
+        "optimizer": [Adam, RMSprop],
         "learning_rate": [0.001, 0.0001],
     }
 

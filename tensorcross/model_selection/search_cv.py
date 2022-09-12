@@ -13,6 +13,7 @@ import numpy as np
 import tensorflow as tf
 from sklearn.model_selection import ParameterGrid
 from sklearn.model_selection import ParameterSampler
+from tensorflow.keras.models import Model
 
 from tensorcross._types import ResultsDict
 from tensorcross.utils import dataset_split
@@ -37,7 +38,7 @@ class BaseSearchCV(metaclass=ABCMeta):
     @abstractmethod
     def __init__(
         self,
-        model_fn: Callable[..., tf.keras.models.Model],
+        model_fn: Callable[..., Model],
         n_folds: int = 3,
         verbose: int = 0,
         **kwargs: Any,
@@ -177,7 +178,7 @@ class BaseSearchCV(metaclass=ABCMeta):
 class GridSearchCV(BaseSearchCV):
     def __init__(
         self,
-        model_fn: Callable[..., tf.keras.models.Model],
+        model_fn: Callable[..., Model],
         param_grid: Mapping[str, Iterable],
         n_folds: int = 3,
         verbose: int = 0,
@@ -242,7 +243,7 @@ class GridSearchCV(BaseSearchCV):
 class RandomSearchCV(BaseSearchCV):
     def __init__(
         self,
-        model_fn: Callable[..., tf.keras.models.Model],
+        model_fn: Callable[..., Model],
         param_distributions: Dict[str, Callable],
         n_iter: int = 10,
         n_folds: int = 3,

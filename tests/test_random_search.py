@@ -7,6 +7,12 @@ import numpy as np
 import tensorflow as tf
 from scipy.stats import uniform
 from sklearn.model_selection import train_test_split
+from tensorflow.keras.layers import Dense
+from tensorflow.keras.layers import Input
+from tensorflow.keras.models import Model
+from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.optimizers import Optimizer
+from tensorflow.keras.optimizers import RMSprop
 
 from tensorcross.model_selection import RandomSearch
 
@@ -42,13 +48,13 @@ class DATA:
 def build_model(
     num_features: int,
     num_targets: int,
-    optimizer: tf.keras.optimizers.Optimizer,
+    optimizer: Optimizer,
     learning_rate: float,
-) -> tf.keras.models.Model:
+) -> Model:
     """Build the test model."""
-    x_input = tf.keras.layers.Input(shape=num_features)
-    y_pred = tf.keras.layers.Dense(units=num_targets)(x_input)
-    model = tf.keras.models.Model(inputs=[x_input], outputs=[y_pred])
+    x_input = Input(shape=num_features)
+    y_pred = Dense(units=num_targets)(x_input)
+    model = Model(inputs=[x_input], outputs=[y_pred])
 
     opt = optimizer(learning_rate=learning_rate)
 
@@ -65,8 +71,8 @@ class RandomSearchTests(unittest.TestCase):
 
         param_distributions = {
             "optimizer": [
-                tf.keras.optimizers.Adam,
-                tf.keras.optimizers.RMSprop,
+                Adam,
+                RMSprop,
             ],
             "learning_rate": uniform(0.001, 0.0001),
         }
