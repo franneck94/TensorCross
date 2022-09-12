@@ -7,12 +7,14 @@ from typing import Callable
 from typing import Dict
 from typing import Iterable
 from typing import Mapping
+from typing import Optional
 from typing import Union
 
 import numpy as np
 import tensorflow as tf
 from sklearn.model_selection import ParameterGrid
 from sklearn.model_selection import ParameterSampler
+from tensorflow.keras.callbacks import TensorBoard
 from tensorflow.keras.models import Model
 
 from tensorcross._types import ResultsDict
@@ -69,20 +71,23 @@ class BaseSearchCV(metaclass=ABCMeta):
             kwargs (Any): Keyword arguments for the fit method of the
                 Model or tf.keras.models.Sequential model.
         """
+        if len(dataset) == 0:
+            raise ValueError("Data Set is empty!")
+
         maximize = True
-        tensorboard_callback = None
+        tensorboard_callback: Optional[TensorBoard] = None
         tensorboard_log_dir = ""
 
         for param, value in kwargs.items():
             if param == "callbacks":
                 for callback in value:
-                    if isinstance(callback, tf.keras.callbacks.TensorBoard):
+                    if isinstance(callback, TensorBoard):
                         tensorboard_callback = callback
 
         if tensorboard_callback:
             tensorboard_log_dir = tensorboard_callback.log_dir
 
-        split_fraction = 1 / self.n_folds
+        split_fraction = 1.0 / self.n_folds
 
         tf_log_level = logger.level
         logger.setLevel(logging.ERROR)  # Issue 30: Ignore warnings for training
@@ -104,6 +109,8 @@ class BaseSearchCV(metaclass=ABCMeta):
                 train_dataset, val_dataset = dataset_split(
                     dataset=dataset, split_fraction=split_fraction, fold=fold
                 )
+                if len(val_dataset) == 0:
+                    raise ValueError("Val Set is empty!")
 
                 if tensorboard_callback:
                     if not os.path.exists(tensorboard_log_dir):
@@ -128,7 +135,7 @@ class BaseSearchCV(metaclass=ABCMeta):
 
         logger.setLevel(tf_log_level)  # Issue 30
 
-        mean_val_scores = np.mean(self.results_["val_scores"], axis=0)
+        mean_val_scores = np.mean(self.results_["val_scores"], axis=1)
         if maximize:
             best_run_idx = np.argmax(mean_val_scores)
         else:

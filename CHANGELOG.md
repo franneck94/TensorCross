@@ -1,5 +1,9 @@
 # TensorCross Change Log
 
+## Version 0.4.3: September 12, 2022
+
+- Bugfix for computing the mean val score in CV
+
 ## Version 0.4.2: September 12, 2022
 
 - Bugfix for sorting scores

@@ -36,8 +36,8 @@ def build_model(
 if __name__ == "__main__":
     dataset = tf.data.Dataset.from_tensor_slices(
         (
-            np.array([1, 2, 3]).reshape(-1, 1),  # x
-            np.array([-1, -2, -3]).reshape(-1, 1),  # y
+            np.array([1, 2, 3, 4]).reshape(-1, 1),  # x
+            np.array([-1, -2, -3, -4]).reshape(-1, 1),  # y
         )
     )
 
@@ -50,7 +50,7 @@ if __name__ == "__main__":
         model_fn=build_model,
         param_distributions=param_distributions,
         n_iter=2,
-        n_folds=2,
+        n_folds=4,
         verbose=1,
         num_features=1,
         num_targets=1,

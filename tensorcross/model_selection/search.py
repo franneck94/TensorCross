@@ -7,12 +7,14 @@ from typing import Callable
 from typing import Dict
 from typing import Iterable
 from typing import Mapping
+from typing import Optional
 from typing import Union
 
 import numpy as np
 import tensorflow as tf
 from sklearn.model_selection import ParameterGrid
 from sklearn.model_selection import ParameterSampler
+from tensorflow.keras.callbacks import TensorBoard
 from tensorflow.keras.models import Model
 
 from tensorcross._types import ResultsDict
@@ -69,13 +71,13 @@ class BaseSearch(metaclass=ABCMeta):
                 Model or tf.keras.models.Sequential model.
         """
         maximize = True
-        tensorboard_callback = None
+        tensorboard_callback: Optional[TensorBoard] = None
         tensorboard_log_dir = ""
 
         for param, value in kwargs.items():
             if param == "callbacks":
                 for callback in value:
-                    if isinstance(callback, tf.keras.callbacks.TensorBoard):
+                    if isinstance(callback, TensorBoard):
                         tensorboard_callback = callback
 
         if tensorboard_callback:
