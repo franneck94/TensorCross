@@ -68,7 +68,7 @@ class BaseSearch(metaclass=ABCMeta):
             kwargs (Any): Keyword arguments for the fit method of the
                 tf.keras.models.Model or tf.keras.models.Sequential model.
         """
-
+        maximize = True
         tensorboard_callback = None
         tensorboard_log_dir = ""
 
@@ -101,12 +101,16 @@ class BaseSearch(metaclass=ABCMeta):
             if len(model.metrics) > 1:
                 val_score = model.evaluate(val_dataset, verbose=0)[-1]
             else:
+                maximize = False
                 val_score = model.evaluate(val_dataset, verbose=0)
             self.results_["val_scores"].append(val_score)
             self.results_["params"].append(grid_combination)
 
         logger.setLevel(tf_log_level)  # Issue 30
-        best_run_idx = np.argmax(self.results_["val_scores"])
+        if maximize:
+            best_run_idx = np.argmax(self.results_["val_scores"])
+        else:
+            best_run_idx = np.argmin(self.results_["val_scores"])
         self.results_["best_score"] = self.results_["val_scores"][best_run_idx]
         self.results_["best_params"] = self.results_["params"][best_run_idx]
 
