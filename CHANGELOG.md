@@ -1,5 +1,9 @@
 # TensorCross Change Log
 
+## Version 0.4.4: March 13, 2023
+
+- Bugfix for MacOS tensorflow metal
+
 ## Version 0.4.3: September 12, 2022
 
 - Bugfix for computing the mean val score in CV
