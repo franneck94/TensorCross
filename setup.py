@@ -34,7 +34,8 @@ VERSION = __version__
 ISRELEASED = False
 
 MIN_PYTHON_VERSION = "3.7"
-INSTALL_REQUIRES = ["tensorflow>=2.0", "numpy", "scipy", "scikit-learn"]
+INSTALL_REQUIRES = ["numpy", "scipy", "scikit-learn"]
+
 
 PACKAGES = find_packages(include=["tensorcross", "tensorcross.*"])
 
