@@ -1,0 +1,33 @@
+[tool.black]
+line-length = 80
+skip-string-normalization = true
+skip-magic-trailing-comma = false
+
+[tool.ruff]
+select = ["F", "E"]
+extend-select = ["W", "I", "B", "UP", "PLE", "PLW", "NPY", "RUF", "PD", "SIM", "PT"]
+fixable = ["E", "F", "W", "I"]
+unfixable = ["B", "UP", "PLE", "PLW", "NPY", "RUF", "PD", "SIM", "PT"]
+ignore = ["F401","E402","C408","C416", "UP006", "UP007", "UP035", "UP038", "B905", "NPY002"]
+
+line-length = 80
+extend-exclude = ["tests", "test"]
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+[tool.ruff.isort]
+force-single-line = true
+force-sort-within-sections = false
+lines-after-imports = 2
+
+[tool.ruff.mccabe]
+max-complexity = 10
+
+[tool.ruff.pycodestyle]
+ignore-overlong-task-comments = true
+
+[tool.ruff.pydocstyle]
+convention = "numpy"
+
+[tool.ruff.flake8-annotations]
+allow-star-arg-any = true
+ignore-fully-untyped = true

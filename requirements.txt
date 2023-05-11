@@ -1,0 +1,10 @@
+# TensorFLow Libraries
+tensorflow-macos; sys_platform == "darwin"
+tensorflow-metal; sys_platform == "darwin"
+tensorflow>=2.0; sys_platform != "darwin"
+keras>=2.0
+
+# Libraries
+scikit-learn
+scipy
+numpy

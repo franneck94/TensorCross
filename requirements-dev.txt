@@ -1,0 +1,29 @@
+# Runtime requirements
+--requirement requirements.txt
+
+# Packaging
+setuptools
+wheel
+twine
+
+# Docs
+mkdocs
+mkdocstrings[python]
+mkdocs-autorefs
+mkdocs-material
+mkdocs-material-extensions
+mkdocstrings
+pygments
+
+# Linting/Tooling
+black>=23.3.0
+isort>=5.12.0
+mypy>=1.2.0
+pre-commit>=3.2.2
+ruff>=0.0.262
+
+# Testing
+pytest
+codecov
+pytest-cov
+tox
