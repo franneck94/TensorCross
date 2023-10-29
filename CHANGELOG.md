@@ -1,5 +1,9 @@
 # TensorCross Change Log
 
+## Version 1.0.0: October 29, 2023
+
+- Some rework, updates docs and versioning. This will be the stable version for TF (Keras) 2.8+
+
 ## Version 0.4.4: March 13, 2023
 
 - Bugfix for MacOS tensorflow metal
