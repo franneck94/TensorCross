@@ -6,11 +6,10 @@ from tensorcross.version import __version__
 
 CLASSIFIERS = """\
 License :: OSI Approved :: MIT License
-Programming Language :: Python :: 3.7
-Programming Language :: Python :: 3.8
 Programming Language :: Python :: 3.9
 Programming Language :: Python :: 3.10
 Programming Language :: Python :: 3.11
+Programming Language :: Python :: 3.12
 Topic :: Software Development
 Operating System :: Microsoft :: Windows
 Operating System :: POSIX
@@ -34,13 +33,13 @@ README = (
 VERSION = __version__
 ISRELEASED = False
 
-MIN_PYTHON_VERSION = "3.7"
-INSTALL_REQUIRES = ["keras", "numpy", "scipy", "scikit-learn"]
+MIN_PYTHON_VERSION = "3.9"
+INSTALL_REQUIRES = ["keras>=2.8", "numpy", "scipy", "scikit-learn>=1.0"]
 
 
 PACKAGES = find_packages(include=["tensorcross", "tensorcross.*"])
 
-metadata = dict(
+metadata = dict(  # noqa: C408
     name=DISTNAME,
     version=VERSION,
     long_description=README,

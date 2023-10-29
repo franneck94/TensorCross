@@ -11,10 +11,6 @@ from tensorcross.model_selection import GridSearch
 from tensorcross.utils import dataset_split
 
 
-np.random.seed(0)
-tf.random.set_seed(0)
-
-
 def build_model(
     optimizer: Optimizer,
     learning_rate: float,

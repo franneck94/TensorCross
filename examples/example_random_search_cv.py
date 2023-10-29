@@ -11,10 +11,6 @@ from scipy.stats import uniform
 from tensorcross.model_selection import RandomSearchCV
 
 
-np.random.seed(0)
-tf.random.set_seed(0)
-
-
 def build_model(
     optimizer: Optimizer,
     learning_rate: float,

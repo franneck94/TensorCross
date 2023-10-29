@@ -1,12 +1,14 @@
+from __future__ import annotations
+
 import logging
 import os
 from abc import ABCMeta
 from abc import abstractmethod
+from collections.abc import Iterable
+from collections.abc import Mapping
 from typing import Any
 from typing import Callable
 from typing import Dict
-from typing import Iterable
-from typing import Mapping
 from typing import Optional
 from typing import Union
 
@@ -56,7 +58,7 @@ class BaseSearchCV(metaclass=ABCMeta):
             "params": [],
         }
 
-    def _run_search(
+    def _run_search(  # noqa: PLR0912
         self,
         dataset: tf.data.Dataset,
         parameter_obj: Union[ParameterGrid, ParameterSampler],
@@ -166,7 +168,9 @@ class BaseSearchCV(metaclass=ABCMeta):
             f"Best score: {self.results_['best_score']} "
             f"using params: {self.results_['best_params']}"
         )
-        dashed_line = "".join(map(lambda x: "-", best_params_str))
+        dashed_line = "".join(
+            map(lambda x: "-", best_params_str)  # noqa: C417, ARG005
+        )
 
         current_line = f"\n{dashed_line}\n{best_params_str}\n{dashed_line}"
         results_str = current_line
@@ -253,7 +257,7 @@ class GridSearchCV(BaseSearchCV):
 
 
 class RandomSearchCV(BaseSearchCV):
-    def __init__(
+    def __init__(  # noqa: PLR0913
         self,
         model_fn: Callable[..., Model],
         param_distributions: Dict[str, Callable],

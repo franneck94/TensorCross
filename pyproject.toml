@@ -1,5 +1,5 @@
 [tool.black]
-target-version = ['py310']
+target-version = ['py39']
 line-length = 80
 skip-string-normalization = false
 skip-magic-trailing-comma = false
@@ -11,7 +11,7 @@ extend-exclude = '''
 '''
 
 [tool.isort]
-py_version = 310
+py_version = 39
 sections = [
     "FUTURE",
     "STDLIB",
@@ -39,12 +39,11 @@ known_third_party = [
     "tqdm",
     "cv2",
     "skimage",
-    "tensorcross",
     "tensorflow_datasets",
     "scikeras"
 ]
 known_first_party = []
-known_local_folder = []
+known_local_folder = ["tensorcross"]
 # style: black
 multi_line_output = 3
 include_trailing_comma = true
@@ -62,7 +61,7 @@ skip_glob = [
 
 [tool.mypy]
 # Platform configuration
-python_version = "3.10"
+python_version = "3.8"
 # imports related
 ignore_missing_imports = true
 follow_imports = "silent"
@@ -102,10 +101,10 @@ show_error_codes = true
 exclude = ["examples"]
 
 [tool.ruff]
-target-version = "py310"
+target-version = "py39"
 select = ["F", "E"]
 extend-select = ["W", "C90", "I", "N", "UP", "YTT", "ANN", "ASYNC", "B", "A", "C4", "DTZ", "FA", "ISC", "ICN", "PIE", "PYI", "PT", "RET", "SLOT", "SIM", "ARG", "PTH", "PD", "PLC", "PLE", "PLR", "PLW", "FLY", "NPY", "PERF", "RUF"]
-ignore = ["I001", "ANN401", "SIM300", "PERF203", "ANN101", "B905"]
+ignore = ["I001", "ANN401", "SIM300", "PERF203", "ANN101", "B905", "UP007", "UP006", "PTH", "UP035"]
 fixable = ["F", "E", "W", "C90", "I", "N", "UP", "YTT", "ANN", "ASYNC", "B", "A", "C4", "DTZ", "FA", "ISC", "ICN", "PIE", "PYI", "PT", "RET", "SLOT", "SIM", "ARG", "PTH", "PD", "PLC", "PLE", "PLR", "PLW", "FLY", "NPY", "PERF", "RUF"]
 unfixable = []
 line-length = 80
@@ -131,7 +130,7 @@ skip-magic-trailing-comma = false
 line-ending = "auto"
 
 [tool.pyright]
-pythonVersion = "3.10"
+pythonVersion = "3.9"
 typeCheckingMode = "basic"
 # enable subset of "strict"
 reportDuplicateImport = true

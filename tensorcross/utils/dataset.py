@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import Tuple
 
 import tensorflow as tf
@@ -30,5 +32,4 @@ def dataset_split(
 def dataset_join(
     dataset_left: tf.data.Dataset, dataset_right: tf.data.Dataset
 ) -> tf.data.Dataset:
-    dataset_joined = dataset_left.concatenate(dataset_right)
-    return dataset_joined
+    return dataset_left.concatenate(dataset_right)

@@ -10,10 +10,6 @@ from keras.optimizers import RMSprop
 from tensorcross.model_selection import GridSearchCV
 
 
-np.random.seed(0)
-tf.random.set_seed(0)
-
-
 def build_model(
     optimizer: Optimizer,
     learning_rate: float,
