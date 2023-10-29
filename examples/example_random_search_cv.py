@@ -16,19 +16,21 @@ tf.random.set_seed(0)
 
 
 def build_model(
-    num_features: int,
-    num_targets: int,
     optimizer: Optimizer,
     learning_rate: float,
 ) -> Model:
     """Build the test model."""
-    x_input = Input(shape=num_features)
-    y_pred = Dense(units=num_targets)(x_input)
+    x_input = Input(shape=1)
+    y_pred = Dense(units=1)(x_input)
     model = Model(inputs=[x_input], outputs=[y_pred])
 
     opt = optimizer(learning_rate=learning_rate)
 
-    model.compile(loss="mse", optimizer=opt, metrics=["mse"])
+    model.compile(
+        loss="mse",
+        optimizer=opt,
+        metrics=["mse"],
+    )
 
     return model
 
@@ -52,10 +54,12 @@ if __name__ == "__main__":
         n_iter=2,
         n_folds=4,
         verbose=1,
-        num_features=1,
-        num_targets=1,
     )
 
-    rand_search_cv.fit(dataset=dataset, epochs=1, verbose=1)
+    rand_search_cv.fit(
+        dataset=dataset,
+        epochs=1,
+        verbose=1,
+    )
 
     rand_search_cv.summary()
