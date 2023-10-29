@@ -65,7 +65,7 @@ Assuming you have a tf.data.Dataset object and a build_model function,
 defined as above. You can run a GridSearch as below:
 
 ``` python
-    from tensorcross.model_selection GridSearch
+    from tensorcross.model_selection import GridSearch
 
     train_dataset, val_dataset = dataset_split(
         dataset=dataset,
@@ -84,8 +84,6 @@ defined as above. You can run a GridSearch as below:
         model_fn=build_model,
         param_grid=param_grid,
         verbose=1,
-        num_features=1,
-        num_targets=1
     )
 
     grid_search.fit(
@@ -127,7 +125,7 @@ Assuming you have a tf.data.Dataset object and a build_model function,
 defined as above. You can run a GridSearchCV as below:
 
 ```python
-    from tensorcross.model_selection GridSearchCV
+    from tensorcross.model_selection import GridSearchCV
 
     param_grid = {
         "optimizer": [
@@ -142,8 +140,6 @@ defined as above. You can run a GridSearchCV as below:
         param_grid=param_grid,
         n_folds=2,
         verbose=1,
-        num_features=1,
-        num_targets=1
     )
 
     grid_search_cv.fit(
