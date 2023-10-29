@@ -173,3 +173,8 @@ This would result in the following console output:
     }
     --------------------------------------------------
 ```
+
+### Callabcks
+
+Adding Callbacks like TensorBoard is easy.
+Just pass the callbacks list to the .fit mehtod like you would do with a normal keras Model.
