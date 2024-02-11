@@ -10,7 +10,7 @@
 
 ## Version 0.4.3: September 12, 2022
 
-- Bugfix for computing the mean val score in CV
+- Bugfix for computing the mean validation score in CV
 
 ## Version 0.4.2: September 12, 2022
 

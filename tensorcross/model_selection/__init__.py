@@ -8,9 +8,9 @@ from .search_cv import RandomSearchCV
 
 __all__ = [
     "BaseSearch",
-    "GridSearch",
-    "RandomSearch",
     "BaseSearchCV",
+    "GridSearch",
     "GridSearchCV",
+    "RandomSearch",
     "RandomSearchCV",
 ]

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import logging
 import os
-from abc import ABCMeta
+from abc import ABC
 from abc import abstractmethod
 from collections.abc import Iterable
 from collections.abc import Mapping
@@ -25,7 +25,7 @@ from tensorcross._types import ResultsDict
 logger = tf.get_logger()
 
 
-class BaseSearch(metaclass=ABCMeta):
+class BaseSearch(ABC):
     """Abstract BaseSearch class for the grid or random search.
 
     Args:

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import logging
 import os
-from abc import ABCMeta
+from abc import ABC
 from abc import abstractmethod
 from collections.abc import Iterable
 from collections.abc import Mapping
@@ -26,7 +26,7 @@ from tensorcross.utils import dataset_split
 logger = tf.get_logger()
 
 
-class BaseSearchCV(metaclass=ABCMeta):
+class BaseSearchCV(ABC):
     """Abstract BaseSearchCV class for the grid or random search
     with cross validation.
 
@@ -74,7 +74,8 @@ class BaseSearchCV(metaclass=ABCMeta):
                 Model or tf.keras.models.Sequential model.
         """
         if len(dataset) == 0:
-            raise ValueError("Data Set is empty!")
+            error_msg = "Validation Set is empty!"
+            raise ValueError(error_msg)
 
         maximize = True
         tensorboard_callback: Optional[TensorBoard] = None
@@ -112,7 +113,8 @@ class BaseSearchCV(metaclass=ABCMeta):
                     dataset=dataset, split_fraction=split_fraction, fold=fold
                 )
                 if len(val_dataset) == 0:
-                    raise ValueError("Val Set is empty!")
+                    error_msg = "Validation Set is empty!"
+                    raise ValueError(error_msg)
 
                 if tensorboard_callback:
                     if not os.path.exists(tensorboard_log_dir):
