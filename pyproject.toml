@@ -72,7 +72,6 @@ extend-select = [
     "SLOT",
     "SIM",
     "TID",
-    "TCH",
     "INT",
     "ARG",
     "PTH",
@@ -90,16 +89,15 @@ extend-select = [
 ignore = [
     "ANN101",
     "ANN102",
+    "ANN401",
     "I001",
     "NPY002",
     "INP001",
     "TRY003",
     "ISC001",
     "COM812",
-    "UP",
-    "TCH003",
-    "ANN401",
-    "TCH",
+    "UP006",
+    "UP007",
     "PTH",
 ]
 fixable = ["ALL"]

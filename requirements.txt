@@ -8,3 +8,5 @@ keras>=2.0
 scikit-learn
 scipy
 numpy
+
+-r requirements-dev.txt
