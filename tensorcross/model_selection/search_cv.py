@@ -54,8 +54,10 @@ class BaseSearchCV(ABC):
         self.results_: ResultsDict = {
             "best_score": -np.inf,
             "best_params": {},
+            "best_model" : [],
             "val_scores": [],
             "params": [],
+            "models" : []
         }
 
     def _run_search(  # noqa: PLR0912
@@ -136,6 +138,7 @@ class BaseSearchCV(ABC):
 
             self.results_["val_scores"].append(val_scores)
             self.results_["params"].append(grid_combination)
+            self.results_["models"].append(model)
 
         logger.setLevel(tf_log_level)  # Issue 30
 
@@ -146,6 +149,7 @@ class BaseSearchCV(ABC):
             best_run_idx = np.argmin(mean_val_scores)
         self.results_["best_score"] = self.results_["val_scores"][best_run_idx]
         self.results_["best_params"] = self.results_["params"][best_run_idx]
+        self.results_["best_model"] = self.results_["models"][best_run_idx]
 
     def summary(self) -> str:
         """Prints the summary of the search to the console.
