@@ -17,7 +17,7 @@ def build_model(
     learning_rate: float,
 ) -> Model:
     """Build the test model."""
-    x_input = Input(shape=1)
+    x_input = Input(shape=(1,))
     y_pred = Dense(units=1)(x_input)
     model = Model(inputs=[x_input], outputs=[y_pred])
 
