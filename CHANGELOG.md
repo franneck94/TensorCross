@@ -1,5 +1,9 @@
 # TensorCross Change Log
 
+## Version 2.0.0: May 20, 2024
+
+- This will be the stable version for TF 2.13+ which is the first version that supports keras 3.0
+
 ## Version 1.0.0: October 29, 2023
 
 - Some rework, updates docs and versioning. This will be the stable version for TF (Keras) 2.8+
