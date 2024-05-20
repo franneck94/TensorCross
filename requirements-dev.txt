@@ -18,7 +18,7 @@ pre-commit>=3.6.2
 nbQA==1.8.4
 
 # Type Checker
-mypy>=1.9.0
+mypy>=1.10.0
 mypy-extensions>=1.0.0
 pyright>=1.1.353
 
